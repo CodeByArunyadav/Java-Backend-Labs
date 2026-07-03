@@ -1,27 +1,29 @@
 package com.hoxcloud.module10.basic;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.hoxcloud.module10.basic.Impl.EmailMessageService;
-import com.hoxcloud.module10.basic.Impl.SMSMessageService;
-
 @SpringBootApplication
-public class Application {
-	
-	
+public class Application implements org.springframework.boot.CommandLineRunner {
+
+	@Autowired
+	@Qualifier("emailMessageService")
+	MessageService messageService;
+
 	public static void main(String[] args) {
 		System.out.println("1. Before Spring Boot");
-		
+
 		SpringApplication.run(Application.class, args);
-		
-	    System.out.println("2. After Spring Boot");
-	
-	MessageService messageService = new SMSMessageService();
-	MessageService messageServiceemail = new EmailMessageService();
-    messageService.sendMessage("Hello from SMS Service");
-	messageServiceemail.sendMessage("Hello this message for email");
+
+		System.out.println("2. After Spring Boot");
 	}
 
-	
+	@Override
+	public void run(String... args) throws Exception {
+		// TODO Auto-generated method stub
+		messageService.sendMessage("Hello from SMS Service");
+	}
+
 }
