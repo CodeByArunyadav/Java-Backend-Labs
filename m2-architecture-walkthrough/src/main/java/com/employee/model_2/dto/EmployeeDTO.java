@@ -8,9 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDTO {

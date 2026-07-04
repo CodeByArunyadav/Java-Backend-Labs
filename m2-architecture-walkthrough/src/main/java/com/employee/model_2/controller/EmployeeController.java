@@ -1,8 +1,7 @@
 package com.employee.model_2.controller;
 
 import com.employee.model_2.dto.EmployeeDTO;
-import com.employee.model_2.entity.EmployeeEntity;
-import com.employee.model_2.repository.EmployeeRepository;
+import com.employee.model_2.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,31 +10,28 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
-    @Autowired
-	EmployeeRepository employeeRepository;
-	@Autowired
-	private final EmployeeDTO employeedto;
+   	@Autowired
+	private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeDTO employeedto) {
-       this.employeedto = employeedto;
+    public EmployeeController(EmployeeService employeeService) {
+       this.employeeService=employeeService;
     }
 
     @GetMapping("/{id}")
-	public EmployeeEntity getEmployees(@PathVariable Long id) {
+	public EmployeeDTO getEmployees(@PathVariable Long id) {
 
-		return employeeRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Employee not found"));
+		return employeeService.getEmployee(id);
 	}
 
 	@PostMapping
-	public EmployeeEntity createEmployee(@RequestBody EmployeeEntity employee) {
+	public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employee) {
 		// Employee employee = new Employee();
 
-		return employeeRepository.save(employee);
+		return employeeService.createEmployee(employee);
 	}
 
 	@PutMapping
-	public EmployeeEntity updateEmployee( @RequestBody EmployeeEntity employee1)
+	public EmployeeDTO updateEmployee( @RequestBody EmployeeDTO employee1)
 	{
 		return employee1;
 	}
