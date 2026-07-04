@@ -4,7 +4,6 @@ import com.employee.model_2.dto.EmployeeDTO;
 import com.employee.model_2.entity.EmployeeEntity;
 import com.employee.model_2.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

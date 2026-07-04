@@ -4,9 +4,6 @@ import com.employee.model_2.dto.EmployeeDTO;
 import com.employee.model_2.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
