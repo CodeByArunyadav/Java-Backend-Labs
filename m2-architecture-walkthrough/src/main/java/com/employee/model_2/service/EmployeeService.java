@@ -67,6 +67,7 @@ public class EmployeeService {
         EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
         updates.forEach((fields, value) -> {
             Field field = ReflectionUtils.findField(EmployeeEntity.class, fields);
+            assert field != null;
             field.setAccessible(true);
             ReflectionUtils.setField(field, employeeEntity, value);
         });
