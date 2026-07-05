@@ -6,6 +6,8 @@ import com.employee.model_2.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmployeeService {
 
@@ -31,5 +33,11 @@ public class EmployeeService {
 
         return modelMapper.map(employeeSave,EmployeeDTO.class);
 
+    }
+
+   public List<EmployeeDTO> getAllEmployee() {
+   //return modelMapper.map(employeeRepository.findAll(), EmployeeDTO.class);
+    return employeeRepository.findAll()
+            .stream().map(employee->modelMapper.map(employee,EmployeeDTO.class)).toList();
     }
 }
