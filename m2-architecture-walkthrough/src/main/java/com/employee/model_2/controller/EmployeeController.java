@@ -5,7 +5,9 @@ import com.employee.model_2.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Patch;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -36,9 +38,25 @@ public class EmployeeController {
 		return employeeService.createEmployee(employee);
 	}
 
-	@PutMapping
-	public EmployeeDTO updateEmployee( @RequestBody EmployeeDTO employee1)
+	@PutMapping(path = "/{id}")
+	public EmployeeDTO updateEmployee( @RequestBody EmployeeDTO employee, @PathVariable long id)
 	{
-		return employee1;
+		return employeeService.updateEmployee(employee,id);
+	}
+
+	@DeleteMapping("/{id}")
+	public String deleteEmployee(@PathVariable long id)
+	{
+		if(employeeService.deleteEmployee(id))
+			return "Employee Deleted Successfully";
+		else
+			return "employee Does not Exit";
+	}
+
+	@PatchMapping("/{id}")
+	public EmployeeDTO patchEmployee(@RequestBody Map<String,Object> updates, @PathVariable long id)
+	{
+		return employeeService.patchEmployee(updates,id);
+
 	}
 }
