@@ -1,6 +1,4 @@
 package com.employee.model_2.dto;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
