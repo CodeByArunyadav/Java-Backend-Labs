@@ -24,6 +24,10 @@ public class EmployeeEntity {
 	private String name;
 	private String email;
 	private String department;
+    private String salary;
 	private Date dateOfJoining;
+    @Column(name = "is_active")
+    private boolean isActive;
+
 
 }
