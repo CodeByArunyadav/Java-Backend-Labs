@@ -1,4 +1,5 @@
 package com.employee.model_2.dto;
+import com.employee.model_2.annotation.ValidEmployeeName;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -10,11 +11,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class EmployeeDTO {
     Long id;
-    @NotEmpty(message = "employee can not be null")
-    @Pattern(
-            regexp = "^[A-Za-z]+(?: [A-Za-z]+)*$",
-            message = "Name must contain only letters and single spaces between words"
-    )
+    //@NotEmpty(message = "employee can not be null")
+    @ValidEmployeeName
     String name;
     @Email(message = "Email should be used in proper formate")
     String email;
