@@ -1,6 +1,4 @@
 package com.employee.model_2.annotation;
-
-import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
