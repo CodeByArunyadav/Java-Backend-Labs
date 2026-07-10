@@ -3,6 +3,7 @@ package com.employee.model_2.service;
 import com.employee.model_2.dto.EmployeeDTO;
 import com.employee.model_2.entity.EmployeeEntity;
 import com.employee.model_2.repository.EmployeeRepository;
+import com.employee.model_2.responsAdvice.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -26,7 +27,13 @@ public class EmployeeService {
 
     public EmployeeDTO getEmployee(Long id) {
         EmployeeEntity employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "408",
+                                "Employee not found"
+                        )
+                );
+
         return modelMapper.map(employee, EmployeeDTO.class);
     }
 

@@ -13,6 +13,7 @@ public class EmployeeDTO {
     Long id;
     //@NotEmpty(message = "employee can not be null")
     @ValidEmployeeName
+    @NotBlank
     String name;
     @Email(message = "Email should be used in proper formate")
     String email;
