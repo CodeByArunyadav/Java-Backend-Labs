@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -22,7 +23,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployees(@PathVariable Long id) {
 
-        return ResponseEntity.ok((employeeService.getEmployee(id)));
+        return ResponseEntity.ok(employeeService.getEmployee(id).orElseThrow(() -> new RuntimeException("Employee not found")));
     }
 
     @GetMapping

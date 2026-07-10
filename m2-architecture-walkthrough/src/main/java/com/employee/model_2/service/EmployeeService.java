@@ -10,6 +10,7 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -24,10 +25,10 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public EmployeeDTO getEmployee(Long id) {
-        EmployeeEntity employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        return modelMapper.map(employee, EmployeeDTO.class);
+    public Optional<EmployeeDTO> getEmployee(Long id) {
+        Optional<EmployeeEntity> employee = employeeRepository.findById(id);
+
+        return Optional.ofNullable(modelMapper.map(employee, EmployeeDTO.class));
     }
 
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
