@@ -27,12 +27,9 @@ public class EmployeeService {
 
     public EmployeeDTO getEmployee(Long id) {
         EmployeeEntity employee = employeeRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "408",
-                                "Employee not found"
-                        )
-                );
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException("Employee not found");
+                });
 
         return modelMapper.map(employee, EmployeeDTO.class);
     }
