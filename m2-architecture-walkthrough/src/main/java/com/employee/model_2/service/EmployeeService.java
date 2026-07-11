@@ -70,13 +70,12 @@ public class EmployeeService {
     }
 
     public EmployeeDTO patchEmployee(Map<String, Object> updates, long id) {
-      isExistsByID(id);
-        EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
+        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User record not found"));
         updates.forEach((fields, value) -> {
             Field field = ReflectionUtils.findField(EmployeeEntity.class, fields);
             //assert field != null;
             if (field==null){throw new InvalidRequestException("One or more Filed are InValid");}
-            if ("id".equals(field)){throw new InvalidRequestException("Invalid Request ID Could not be update");}
+            if ("id".equals(fields)){throw new InvalidRequestException("Invalid Request ID Could not be update");}
             Object convertedValue = convertValue(field, value);
             field.setAccessible(true);
             ReflectionUtils.setField(field, employeeEntity, convertedValue);
