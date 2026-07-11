@@ -38,7 +38,7 @@ public class EmployeeController {
 	}
 
 	@PutMapping(path = "/{id}")
-	public EmployeeDTO updateEmployee( @RequestBody @Valid EmployeeDTO employee, @PathVariable long id)
+	public EmployeeDTO updateEmployee(@Valid @RequestBody  EmployeeDTO employee, @PathVariable long id)
 	{
 		return employeeService.updateEmployee(employee,id);
 	}
@@ -52,7 +52,7 @@ public class EmployeeController {
 	}
 
 	@PatchMapping("/{id}")
-	public EmployeeDTO patchEmployee(@RequestBody @Valid Map<String,Object> updates, @PathVariable long id)
+	public EmployeeDTO patchEmployee(@Valid @RequestBody Map<String,Object> updates, @PathVariable long id)
 	{
 		return employeeService.patchEmployee(updates,id);
 

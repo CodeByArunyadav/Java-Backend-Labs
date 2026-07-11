@@ -25,8 +25,8 @@ public class EmployeeDTO {
     )
     String department;
     @Positive
-    @DecimalMin("10000")
-    @DecimalMax("20000")
+    @DecimalMin(value = "10000", message = "Salary must be at least 10000")
+    @DecimalMax(value = "20000", message = "Salary cannot exceed 20000")
     BigDecimal salary;
     @PastOrPresent
     Date dateOfJoining;
