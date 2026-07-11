@@ -1,9 +1,9 @@
 package com.employee.model_2.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Employee")
+@Table(name ="Employee")
 
 public class EmployeeEntity {
 	@Id
@@ -21,7 +21,7 @@ public class EmployeeEntity {
 	private String name;
 	private String email;
 	private String department;
-    private String salary;
+    private BigDecimal salary;
 	private Date dateOfJoining;
     @Column(name = "is_active")
     private boolean isActive;
