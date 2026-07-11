@@ -1,4 +1,4 @@
-package com.employee.model_2.responsAdvice;
+package com.employee.model_2.exception;
 import java.time.LocalDateTime;
 
 public record ApiError(

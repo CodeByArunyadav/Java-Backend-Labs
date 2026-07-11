@@ -38,7 +38,7 @@ public class EmployeeController {
 	}
 
 	@PutMapping(path = "/{id}")
-	public EmployeeDTO updateEmployee( @RequestBody EmployeeDTO employee, @PathVariable long id)
+	public EmployeeDTO updateEmployee( @RequestBody @Valid EmployeeDTO employee, @PathVariable long id)
 	{
 		return employeeService.updateEmployee(employee,id);
 	}
@@ -46,14 +46,13 @@ public class EmployeeController {
 	@DeleteMapping("/{id}")
 	public String deleteEmployee(@PathVariable long id)
 	{
-		if(employeeService.deleteEmployee(id))
-			return "Employee Deleted Successfully";
-		else
-			return "employee Does not Exit";
+		employeeService.deleteEmployee(id);
+
+        return "Employee Deleted Successfully";
 	}
 
 	@PatchMapping("/{id}")
-	public EmployeeDTO patchEmployee(@RequestBody Map<String,Object> updates, @PathVariable long id)
+	public EmployeeDTO patchEmployee(@RequestBody @Valid Map<String,Object> updates, @PathVariable long id)
 	{
 		return employeeService.patchEmployee(updates,id);
 

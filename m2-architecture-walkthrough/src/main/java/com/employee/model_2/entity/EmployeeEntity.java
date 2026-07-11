@@ -1,5 +1,6 @@
 package com.employee.model_2.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -21,7 +22,7 @@ public class EmployeeEntity {
 	private String name;
 	private String email;
 	private String department;
-    private String salary;
+    private BigDecimal salary;
 	private Date dateOfJoining;
     @Column(name = "is_active")
     private boolean isActive;

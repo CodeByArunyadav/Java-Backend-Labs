@@ -2,13 +2,17 @@ package com.employee.model_2.service;
 
 import com.employee.model_2.dto.EmployeeDTO;
 import com.employee.model_2.entity.EmployeeEntity;
+import com.employee.model_2.exception.DuplicateResourceException;
+import com.employee.model_2.exception.InvalidRequestException;
 import com.employee.model_2.repository.EmployeeRepository;
-import com.employee.model_2.responsAdvice.ResourceNotFoundException;
+import com.employee.model_2.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +39,11 @@ public class EmployeeService {
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
 
         EmployeeEntity employeeEntity = modelMapper.map(employeeDTO, EmployeeEntity.class);
+        if (employeeRepository.existsByName(employeeEntity.getName())) {
+            throw new DuplicateResourceException("Resources with this user name" + employeeEntity.getName() + " already created");
+        }
         EmployeeEntity employeeSave = employeeRepository.save(employeeEntity);
-
         return modelMapper.map(employeeSave, EmployeeDTO.class);
-
     }
 
     public List<EmployeeDTO> getAllEmployee() {
@@ -47,35 +52,74 @@ public class EmployeeService {
                 .stream().map(employee -> modelMapper.map(employee, EmployeeDTO.class)).toList();
     }
 
-    public boolean isExistsByID(long id) {
-        return employeeRepository.existsById(id);
+    public void isExistsByID(long id) {
+        if (!employeeRepository.existsById(id)) {throw new ResourceNotFoundException("Invalid Request User not not found");
+        }
     }
 
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO, long id) {
         EmployeeEntity employeeEntitySave = modelMapper.map(employeeDTO, EmployeeEntity.class);
-        boolean exists = isExistsByID(id);
-        if (!exists) return null;
+        isExistsByID(id);
         employeeEntitySave.setId(id);
         return modelMapper.map(employeeRepository.save(employeeEntitySave), EmployeeDTO.class);
     }
 
-    public boolean deleteEmployee(long id) {
-        boolean exists = isExistsByID(id);
-        if (exists) employeeRepository.deleteById(id);
-        return exists;
+    public void deleteEmployee(long id) {
+        isExistsByID(id);
+        employeeRepository.deleteById(id);
     }
 
     public EmployeeDTO patchEmployee(Map<String, Object> updates, long id) {
-        boolean exists = isExistsByID(id);
-        if (!exists) return null;
+      isExistsByID(id);
         EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
         updates.forEach((fields, value) -> {
             Field field = ReflectionUtils.findField(EmployeeEntity.class, fields);
-            assert field != null;
+            //assert field != null;
+            if (field==null){throw new InvalidRequestException("One or more Filed are InValid");}
+            if ("id".equals(field)){throw new InvalidRequestException("Invalid Request ID Could not be update");}
+            Object convertedValue = convertValue(field, value);
             field.setAccessible(true);
-            ReflectionUtils.setField(field, employeeEntity, value);
+            ReflectionUtils.setField(field, employeeEntity, convertedValue);
         });
         return modelMapper.map(employeeRepository.save(employeeEntity), EmployeeDTO.class);
 
+    }
+    private Object convertValue(Field field, Object value) {
+
+        if (value == null) {
+            return null;
+        }
+
+        Class<?> fieldType = field.getType();
+
+        if (fieldType.equals(BigDecimal.class)) {
+            return new BigDecimal(value.toString());
+        }
+
+        if (fieldType.equals(Long.class) || fieldType.equals(long.class)) {
+            return Long.valueOf(value.toString());
+        }
+
+        if (fieldType.equals(Integer.class) || fieldType.equals(int.class)) {
+            return Integer.valueOf(value.toString());
+        }
+
+        if (fieldType.equals(Double.class) || fieldType.equals(double.class)) {
+            return Double.valueOf(value.toString());
+        }
+
+        if (fieldType.equals(Boolean.class) || fieldType.equals(boolean.class)) {
+            return Boolean.valueOf(value.toString());
+        }
+
+        if (fieldType.equals(LocalDate.class)) {
+            return LocalDate.parse(value.toString());
+        }
+
+        if (fieldType.equals(String.class)) {
+            return value.toString();
+        }
+
+        return value;
     }
 }

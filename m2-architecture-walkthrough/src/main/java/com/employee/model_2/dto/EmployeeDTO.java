@@ -3,6 +3,7 @@ import com.employee.model_2.annotation.ValidEmployeeName;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -26,7 +27,7 @@ public class EmployeeDTO {
     @Positive
     @DecimalMin("10000")
     @DecimalMax("20000")
-    String salary;
+    BigDecimal salary;
     @PastOrPresent
     Date dateOfJoining;
     boolean active;
