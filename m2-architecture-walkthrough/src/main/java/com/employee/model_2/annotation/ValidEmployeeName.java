@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = EmployeeNameValidator.class)
 
 public @interface ValidEmployeeName {
-    String message() default " ";
+    String message() default "Employee name must not contain numbers";
 
     Class<?>[] groups() default { };
 
