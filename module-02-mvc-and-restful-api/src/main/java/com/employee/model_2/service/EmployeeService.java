@@ -53,7 +53,8 @@ public class EmployeeService {
     }
 
     public void isExistsByID(long id) {
-        if (!employeeRepository.existsById(id)) {throw new ResourceNotFoundException("Invalid Request User not not found");
+        if (!employeeRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Invalid Request User not not found");
         }
     }
 
@@ -70,12 +71,16 @@ public class EmployeeService {
     }
 
     public EmployeeDTO patchEmployee(Map<String, Object> updates, long id) {
-        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User record not found"));
+        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User record not found"));
         updates.forEach((fields, value) -> {
             Field field = ReflectionUtils.findField(EmployeeEntity.class, fields);
             //assert field != null;
-            if (field==null){throw new InvalidRequestException("One or more Filed are InValid");}
-            if ("id".equals(fields)){throw new InvalidRequestException("Invalid Request ID Could not be update");}
+            if (field == null) {
+                throw new InvalidRequestException("One or more Filed InValid");
+            }
+            if ("id".equals(fields)) {
+                throw new InvalidRequestException("Invalid Request ID Could not be update");
+            }
             Object convertedValue = convertValue(field, value);
             field.setAccessible(true);
             ReflectionUtils.setField(field, employeeEntity, convertedValue);
@@ -83,6 +88,7 @@ public class EmployeeService {
         return modelMapper.map(employeeRepository.save(employeeEntity), EmployeeDTO.class);
 
     }
+
     private Object convertValue(Field field, Object value) {
 
         if (value == null) {
