@@ -3,6 +3,7 @@ import com.employee.model_2.annotation.ValidEmployeeName;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -12,13 +13,8 @@ import java.util.Date;
 public class EmployeeDTO {
     Long id;
     //@NotEmpty(message = "employee can not be null")
-    @ValidEmployeeName
-    @NotBlank
     @NotEmpty(message = "employee can not be null")
-    @Pattern(
-            regexp = "^[A-Za-z]+(?: [A-Za-z]+)*$",
-            message = "Name must contain only letters and single spaces between words"
-    )
+    @ValidEmployeeName
     String name;
     @Email(message = "Email should be used in proper formate")
     String email;
@@ -31,9 +27,9 @@ public class EmployeeDTO {
     @Positive
     @DecimalMin("10000")
     @DecimalMax("20000")
-    String salary;
+    BigDecimal salary;
     @PastOrPresent
     Date dateOfJoining;
-    boolean active;
+    boolean isActive;
 
 }

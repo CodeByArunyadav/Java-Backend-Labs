@@ -23,7 +23,7 @@ public class EmployeeEntity {
 	private String department;
     private BigDecimal salary;
 	private Date dateOfJoining;
-    @Column(name = "is_active")
+    @Column(name = "isActive")
     private boolean isActive;
 
 
