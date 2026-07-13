@@ -5,6 +5,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/m2-architecture-walkthrough/pom.xml" />
+        <option value="$PROJECT_DIR$/module-02-mvc-and-restful-api/pom.xml" />
+        <option value="$PROJECT_DIR$/module1.0-basic/pom.xml" />
       </list>
     </option>
   </component>

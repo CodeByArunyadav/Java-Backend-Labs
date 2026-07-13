@@ -39,8 +39,8 @@ public class EmployeeService {
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
 
         EmployeeEntity employeeEntity = modelMapper.map(employeeDTO, EmployeeEntity.class);
-        if (employeeRepository.existsByName(employeeEntity.getName())) {
-            throw new DuplicateResourceException("Resources with this user name" + employeeEntity.getName() + " already created");
+        if (employeeRepository.existsByEmail(employeeEntity.getEmail())){
+            throw new DuplicateResourceException("Mail id"+ employeeEntity.getEmail() + " already created");
         }
         EmployeeEntity employeeSave = employeeRepository.save(employeeEntity);
         return modelMapper.map(employeeSave, EmployeeDTO.class);
@@ -76,7 +76,7 @@ public class EmployeeService {
             Field field = ReflectionUtils.findField(EmployeeEntity.class, fields);
             //assert field != null;
             if (field == null) {
-                throw new InvalidRequestException("One or more Filed InValid");
+                throw new InvalidRequestException("One or More Filed InValid");
             }
             if ("id".equals(fields)) {
                 throw new InvalidRequestException("Invalid Request ID Could not be update");
