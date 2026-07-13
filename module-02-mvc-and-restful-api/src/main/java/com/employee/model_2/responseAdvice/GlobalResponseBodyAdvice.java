@@ -7,8 +7,6 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import java.time.LocalDateTime;
-
 @RestControllerAdvice
 public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
