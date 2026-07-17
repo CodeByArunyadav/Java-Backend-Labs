@@ -6,8 +6,10 @@ import com.employee.model_2.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +29,13 @@ public class GlobalCustomeException {
 
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse<?>> HandleHttpMessageNotReadableException(HttpMessageNotReadableException exception)
+    {
+        ApiError apiError= ApiError.builder().status(HttpStatus.BAD_REQUEST).message("Invalid Input : Please Check Field again !!").build();
+        return buildApiErrorResponseEntity(apiError);
+
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<?>> handleApiValidationException(MethodArgumentNotValidException exception) {
         List<String> apiError = exception

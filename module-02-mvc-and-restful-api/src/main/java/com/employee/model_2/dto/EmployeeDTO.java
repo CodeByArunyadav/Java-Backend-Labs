@@ -1,8 +1,11 @@
 package com.employee.model_2.dto;
 import com.employee.model_2.annotation.ValidEmployeeName;
 import com.employee.model_2.annotation.ValidateSalary;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
@@ -26,9 +29,6 @@ public class EmployeeDTO {
             message = "Department must be IT, HR, FINANCE, SALES, MARKETING, or OPERATIONS"
     )
     String department;
-    @Positive
-    @DecimalMin("10000")
-    @DecimalMax("20000")
     @ValidateSalary
     BigDecimal salary;
     @PastOrPresent
