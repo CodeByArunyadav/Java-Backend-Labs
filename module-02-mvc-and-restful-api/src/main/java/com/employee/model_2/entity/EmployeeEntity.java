@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Getter
 @Setter
 @Entity
-@Table(name ="Employee")
+//@Table(name ="Employee")
 
 public class EmployeeEntity {
 	@Id
@@ -25,7 +25,7 @@ public class EmployeeEntity {
     private BigDecimal salary;
 	@CreationTimestamp
 	private Date dateOfJoining;
-    @Column(name = "isActive")
+    //@Column(name = "isActive")
     private boolean isActive;
 
 
