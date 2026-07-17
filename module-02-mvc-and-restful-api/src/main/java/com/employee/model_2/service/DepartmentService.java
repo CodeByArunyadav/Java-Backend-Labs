@@ -2,14 +2,15 @@ package com.employee.model_2.service;
 
 import com.employee.model_2.dto.DepartmentDTO;
 import com.employee.model_2.entity.DepartmentEntity;
+import com.employee.model_2.exception.ResourceNotFoundException;
 import com.employee.model_2.repository.DepartmentRepository;
-import org.hibernate.query.sqm.tree.expression.Conversion;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -20,8 +21,13 @@ public class DepartmentService {
     private ModelMapper modelMapper;
 
     public DepartmentDTO getDepartmentByID(Long id) {
-           return modelMapper.map( departmentRepository.findById(id).orElseThrow(),DepartmentDTO.class);
+           return modelMapper.map( departmentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Department not found")),DepartmentDTO.class);
 
+    }
+
+
+    public List<DepartmentDTO> getAllByDepartment() {
+        return departmentRepository.findAll().stream().map(department-> modelMapper.map(department,DepartmentDTO.class)).toList();
     }
 
     public DepartmentDTO createDepartment(DepartmentDTO departmentDTO) {
@@ -41,17 +47,22 @@ public class DepartmentService {
     }
 
     public DepartmentDTO patchDepartmentField(Map<String, Object> updates, Long id) {
+      if(!departmentRepository.existsById(id)) {throw new ResourceNotFoundException("Resources not found for ID" + id);}
 
-        DepartmentEntity departmentEntity= departmentRepository.getById(id);
-        updates.forEach((fields,value)-> {
-                      Field field= ReflectionUtils.findField(DepartmentEntity.class,fields);
-                      field.setAccessible(true);
-                      ReflectionUtils.setField(field,departmentEntity,value);
+        DepartmentEntity departmentEntity= departmentRepository.getReferenceById(id);
+
+        updates.forEach((fields,values)->{
+            Field field= ReflectionUtils.findField(DepartmentEntity.class,fields);
+
+            if(field==null || field.equals(id)) {throw new ResourceNotFoundException("Field does not exist or Id Could not change");}
+            field.setAccessible(true);
+            ReflectionUtils.setField(field,departmentEntity,values);
 
         });
 
         return modelMapper.map((departmentRepository.save(departmentEntity)),DepartmentDTO.class);
 
     }
+
 }
 

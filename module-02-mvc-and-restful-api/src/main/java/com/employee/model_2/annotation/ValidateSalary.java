@@ -3,8 +3,6 @@ package com.employee.model_2.annotation;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.ElementType;
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Positive;

@@ -1,13 +1,8 @@
 package com.employee.model_2.dto;
 import com.employee.model_2.annotation.ValidEmployeeName;
 import com.employee.model_2.annotation.ValidateSalary;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.format.annotation.NumberFormat;
-
 import java.math.BigDecimal;
 import java.util.Date;
 

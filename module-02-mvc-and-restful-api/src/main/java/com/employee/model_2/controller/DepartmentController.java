@@ -1,12 +1,11 @@
 package com.employee.model_2.controller;
 
 import com.employee.model_2.dto.DepartmentDTO;
-import com.employee.model_2.entity.DepartmentEntity;
 import com.employee.model_2.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,6 +18,11 @@ public class DepartmentController {
     @GetMapping(path = "/{id}")
     public DepartmentDTO getDepartmentById(@PathVariable Long id) {
         return departmentService.getDepartmentByID(id);
+    }
+
+    @GetMapping()
+    public List<DepartmentDTO> getAllByDepartment() {
+        return departmentService.getAllByDepartment();
     }
 
     @PostMapping
