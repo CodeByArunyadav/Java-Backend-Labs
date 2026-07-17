@@ -1,8 +1,8 @@
 package com.employee.model_2.dto;
 import com.employee.model_2.annotation.ValidEmployeeName;
+import com.employee.model_2.annotation.ValidateSalary;
 import jakarta.validation.constraints.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -24,9 +24,7 @@ public class EmployeeDTO {
             message = "Department must be IT, HR, FINANCE, SALES, MARKETING, or OPERATIONS"
     )
     String department;
-    @Positive
-    @DecimalMin("10000")
-    @DecimalMax("20000")
+    @ValidateSalary
     BigDecimal salary;
     @PastOrPresent
     Date dateOfJoining;

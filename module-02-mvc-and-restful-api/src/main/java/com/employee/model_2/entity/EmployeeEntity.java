@@ -7,12 +7,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name ="Employee")
+//@Table(name ="Employee")
 
 public class EmployeeEntity {
 	@Id
@@ -22,8 +23,9 @@ public class EmployeeEntity {
 	private String email;
 	private String department;
     private BigDecimal salary;
+	@CreationTimestamp
 	private Date dateOfJoining;
-    @Column(name = "isActive")
+    //@Column(name = "isActive")
     private boolean isActive;
 
 
