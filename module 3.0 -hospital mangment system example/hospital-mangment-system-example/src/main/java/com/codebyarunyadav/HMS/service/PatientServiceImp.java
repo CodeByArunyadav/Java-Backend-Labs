@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class PatientServiceImp implements PatientService {
 private final PatientRepository patientRepository;
     private final ModelMapper modelMapper;
-    private final MapperBuilder mapperBuilder;
 
     @Override
     public List<PatientDTO> getPatient() {
@@ -58,7 +57,7 @@ private final PatientRepository patientRepository;
 
     @Override
     public PatientDTO  patchPatient(Map<String, Object> updates, long id) {
-        if (!patientRepository.existsById(id)){throw  new RuntimeException();};
+        if (!patientRepository.existsById(id)){throw  new RuntimeException();}
        PatientEntity patientEntityData=patientRepository.findById(id).orElseThrow(()->new RuntimeException("No record Found"+id));
         updates.forEach((fields, value )-> {
             Field field=ReflectionUtils.findField(PatientEntity.class,fields);
