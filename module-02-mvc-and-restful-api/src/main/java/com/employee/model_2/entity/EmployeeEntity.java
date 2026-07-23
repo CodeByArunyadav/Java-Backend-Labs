@@ -21,12 +21,13 @@ public class EmployeeEntity {
 	private Long id;
 	private String name;
 	private String email;
-	private String department;
     private BigDecimal salary;
 	@CreationTimestamp
 	private Date dateOfJoining;
     //@Column(name = "isActive")
     private boolean isActive;
-
+    @ManyToOne
+    @JoinColumn(name = "employee_department_id")
+    private DepartmentEntity employeeDepartmentID;
 
 }

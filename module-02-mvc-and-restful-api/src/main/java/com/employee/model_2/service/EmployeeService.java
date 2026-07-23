@@ -42,7 +42,9 @@ public class EmployeeService {
         if (employeeRepository.existsByEmail(employeeEntity.getEmail())){
             throw new DuplicateResourceException("Mail id"+ employeeEntity.getEmail() + " already created");
         }
+       // employeeRepository.existByEmployeeDepartmentID(employeeEntity.getEmployeeDepartmentID());
         EmployeeEntity employeeSave = employeeRepository.save(employeeEntity);
+       // employeeSave.setEmployeeDepartmentID(employeeRepository.findByEmployeeDepartmentID(employeeEntity.getEmployeeDepartmentID()));
         return modelMapper.map(employeeSave, EmployeeDTO.class);
     }
 
