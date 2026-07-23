@@ -1,6 +1,7 @@
 package com.employee.model_2.dto;
 import com.employee.model_2.annotation.ValidEmployeeName;
 import com.employee.model_2.annotation.ValidateSalary;
+import com.employee.model_2.entity.DepartmentEntity;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -18,16 +19,11 @@ public class EmployeeDTO {
     String name;
     @Email(message = "Email should be used in proper formate")
     String email;
-
-    @Pattern(
-            regexp = "^(IT|HR|FINANCE|SALES|MARKETING|OPERATIONS)$",
-            message = "Department must be IT, HR, FINANCE, SALES, MARKETING, or OPERATIONS"
-    )
-    String department;
     @ValidateSalary
     BigDecimal salary;
     @PastOrPresent
     Date dateOfJoining;
     boolean isActive;
+    private DepartmentEntity employeeDepartmentID;
 
 }
