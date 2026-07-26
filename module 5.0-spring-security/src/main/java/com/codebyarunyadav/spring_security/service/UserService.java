@@ -15,7 +15,7 @@ private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).orElseThrow(()->new ConfigDataResourceNotFoundException(" Resource not found"));
+        return userRepository.findByEmail(username).orElseThrow(()->new RuntimeException("Resource not found "));
 
     }
 
