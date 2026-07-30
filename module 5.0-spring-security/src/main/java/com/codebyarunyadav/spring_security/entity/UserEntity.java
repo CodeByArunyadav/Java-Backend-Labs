@@ -27,11 +27,6 @@ public class UserEntity implements UserDetails {
     @NonNull
     private String role;
 
-  /*  public UserEntity(long id, String mail, String password) {
-    this.id=id;
-    this.email=mail;
-    this.password=password;
-    }*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

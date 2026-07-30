@@ -1,20 +1,14 @@
 package com.codebyarunyadav.spring_security.service;
 
-import com.codebyarunyadav.spring_security.dto.LoginDto;
 import com.codebyarunyadav.spring_security.dto.SignUpDto;
 import com.codebyarunyadav.spring_security.dto.UserDto;
 import com.codebyarunyadav.spring_security.entity.UserEntity;
 import com.codebyarunyadav.spring_security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
