@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -31,8 +32,6 @@ public class JwtService {
         return Jwts.builder()
                 //.subject(String.valueOf(user.getId()))
                 .subject(user.getEmail())
-                //.claim("Email", user.getEmail())
-                //.claim("role", Set.of("Admin", "User"))
                 .claim("role",user.getRole())
                 .claim("type","ACCESS")
                 .issuedAt(new Date())
@@ -48,14 +47,14 @@ public class JwtService {
         String tokenType = extractTokenType(token);
         boolean expired = isTokenExpired(token);
 
-        System.out.println("Token Username : " + tokenUsername);
+       /* System.out.println("Token Username : " + tokenUsername);
         System.out.println("DB Username    : " + dbUsername);
         System.out.println("Username Match : " + tokenUsername.equals(dbUsername));
 
         System.out.println("Token Type     : " + tokenType);
         System.out.println("Type Match     : " + "ACCESS".equals(tokenType));
 
-        System.out.println("Expired        : " + expired);
+        System.out.println("Expired        : " + expired);*/
 
         return tokenUsername.equals(dbUsername)
                 && "ACCESS".equals(tokenType)
