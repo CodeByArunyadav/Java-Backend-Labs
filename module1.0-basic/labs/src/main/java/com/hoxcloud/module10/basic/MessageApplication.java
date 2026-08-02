@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MessageApplication implements org.springframework.boot.CommandLineRunner {
 
 	@Autowired
-	@Qualifier("emailMessageService")
+	@Qualifier("email")
 	MessageService messageService;
 
 	public static void main(String[] args) {
@@ -23,7 +23,7 @@ public class MessageApplication implements org.springframework.boot.CommandLineR
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
-		messageService.sendMessage("Hello from SMS Service");
+		messageService.sendMessage("Hello Record data Service");
 	}
 
 }
