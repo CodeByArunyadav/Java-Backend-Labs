@@ -9,14 +9,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="module1.0-basic" />
       </profile>
-      <profile name="Annotation profile for spring-security" enabled="true">
+      <profile name="Annotation profile for capstone" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
-        <module name="spring-security" />
+        <module name="capstone" />
       </profile>
       <profile name="Annotation profile for m2-architecture-walkthrough" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -27,6 +27,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
         <module name="hospital-mangment-system-example" />
+        <module name="spring-security" />
         <module name="m2-architecture-walkthrough" />
       </profile>
     </annotationProcessing>
@@ -36,6 +37,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="capstone" options="-parameters" />
       <module name="hospital-mangment-system-example" options="-parameters" />
       <module name="m2-architecture-walkthrough" options="-parameters" />
       <module name="module1.0-basic" options="-parameters" />
