@@ -27,6 +27,9 @@ public class UserEntity implements UserDetails {
     @NonNull
     private String role;
 
+    public UserEntity(long l, String mail, String number) {
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
