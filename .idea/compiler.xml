@@ -9,29 +9,23 @@
         <outputRelativeToContentRoot value="true" />
         <module name="module1.0-basic" />
       </profile>
-      <profile name="Annotation profile for capstone" enabled="true">
+      <profile name="Annotation profile for lab" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-        </processorPath>
-        <module name="capstone" />
-      </profile>
-      <profile name="Annotation profile for m2-architecture-walkthrough" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
         <module name="hospital-mangment-system-example" />
+        <module name="capstone" />
         <module name="spring-security" />
+        <module name="lab" />
         <module name="m2-architecture-walkthrough" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="hospital-mangment-system-example" target="17" />
+      <module name="spring-security" target="21" />
       <module name="springAPI" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -39,6 +33,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="capstone" options="-parameters" />
       <module name="hospital-mangment-system-example" options="-parameters" />
+      <module name="lab" options="-parameters" />
       <module name="m2-architecture-walkthrough" options="-parameters" />
       <module name="module1.0-basic" options="-parameters" />
       <module name="spring-security" options="-parameters" />

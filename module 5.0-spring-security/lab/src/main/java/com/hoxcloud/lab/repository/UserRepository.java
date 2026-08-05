@@ -1,6 +1,6 @@
-package com.codebyarunyadav.spring_security.repository;
+package com.hoxcloud.lab.repository;
 
-import com.codebyarunyadav.spring_security.entity.UserEntity;
+import com.hoxcloud.lab.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

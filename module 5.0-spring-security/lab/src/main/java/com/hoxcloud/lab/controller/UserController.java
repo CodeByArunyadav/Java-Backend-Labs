@@ -1,4 +1,4 @@
-package com.codebyarunyadav.spring_security.controller;
+package com.hoxcloud.lab.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

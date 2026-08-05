@@ -1,7 +1,7 @@
-package com.codebyarunyadav.spring_security.service;
+package com.hoxcloud.lab.service;
 
-import com.codebyarunyadav.spring_security.dto.LoginDto;
-import com.codebyarunyadav.spring_security.entity.UserEntity;
+import com.hoxcloud.lab.dto.LoginDto;
+import com.hoxcloud.lab.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

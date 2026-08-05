@@ -1,4 +1,4 @@
-package com.codebyarunyadav.spring_security.dto;
+package com.hoxcloud.lab.dto;
 
 import lombok.Data;
 

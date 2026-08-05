@@ -1,4 +1,4 @@
-package com.codebyarunyadav.spring_security.config;
+package com.hoxcloud.lab.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

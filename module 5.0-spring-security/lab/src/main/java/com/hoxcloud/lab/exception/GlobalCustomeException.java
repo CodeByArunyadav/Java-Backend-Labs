@@ -1,4 +1,4 @@
-package com.codebyarunyadav.spring_security.exception;
+package com.hoxcloud.lab.exception;
 
 
 import io.jsonwebtoken.JwtException;

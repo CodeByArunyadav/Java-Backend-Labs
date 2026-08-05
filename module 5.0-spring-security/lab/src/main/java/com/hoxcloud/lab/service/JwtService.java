@@ -1,6 +1,6 @@
-package com.codebyarunyadav.spring_security.service;
+package com.hoxcloud.lab.service;
 
-import com.codebyarunyadav.spring_security.entity.UserEntity;
+import com.hoxcloud.lab.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

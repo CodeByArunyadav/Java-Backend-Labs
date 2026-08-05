@@ -1,4 +1,4 @@
-package com.codebyarunyadav.spring_security.exception;
+package com.hoxcloud.lab.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

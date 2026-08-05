@@ -1,13 +1,11 @@
-package com.codebyarunyadav.spring_security.controller;
-
-import com.codebyarunyadav.spring_security.dto.LoginDto;
-import com.codebyarunyadav.spring_security.dto.SignUpDto;
-import com.codebyarunyadav.spring_security.dto.UserDto;
-import com.codebyarunyadav.spring_security.service.AuthService;
-import com.codebyarunyadav.spring_security.service.UserService;
+package com.hoxcloud.lab.controller;
+import com.hoxcloud.lab.dto.LoginDto;
+import com.hoxcloud.lab.dto.SignUpDto;
+import com.hoxcloud.lab.dto.UserDto;
+import com.hoxcloud.lab.service.AuthService;
+import com.hoxcloud.lab.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

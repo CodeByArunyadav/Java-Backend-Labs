@@ -1,4 +1,4 @@
-package com.codebyarunyadav.spring_security.service;
+package com.hoxcloud.lab.service;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

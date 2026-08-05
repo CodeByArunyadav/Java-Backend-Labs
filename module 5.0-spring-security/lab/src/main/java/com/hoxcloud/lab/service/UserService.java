@@ -1,9 +1,9 @@
-package com.codebyarunyadav.spring_security.service;
+package com.hoxcloud.lab.service;
 
-import com.codebyarunyadav.spring_security.dto.SignUpDto;
-import com.codebyarunyadav.spring_security.dto.UserDto;
-import com.codebyarunyadav.spring_security.entity.UserEntity;
-import com.codebyarunyadav.spring_security.repository.UserRepository;
+import com.hoxcloud.lab.dto.SignUpDto;
+import com.hoxcloud.lab.dto.UserDto;
+import com.hoxcloud.lab.entity.UserEntity;
+import com.hoxcloud.lab.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
