@@ -1,0 +1,19 @@
+[33mcommit 3dea162d8f4469e2179ed3ed2b91a54ee2bfd93c[m
+Author: Arun Yadav <codebyarunyadav@gmail.com>
+Date:   Sun Jul 26 18:23:32 2026 +0530
+
+    Spring security api has been implemented and push to github
+
+.idea/compiler.xml
+.idea/dataSources.xml
+.idea/encodings.xml
+.idea/misc.xml
+module 3.0 -hospital mangment system example/hospital-mangment-system-example/src/main/java/com/codebyarunyadav/HMS/entity/AppointmentEntity.java
+module 3.0 -hospital mangment system example/hospital-mangment-system-example/src/main/java/com/codebyarunyadav/HMS/entity/DepartmentEntity.java
+module 3.0 -hospital mangment system example/hospital-mangment-system-example/src/main/java/com/codebyarunyadav/HMS/entity/DoctorEntity.java
+module 3.0 -hospital mangment system example/hospital-mangment-system-example/src/main/java/com/codebyarunyadav/HMS/entity/InsuranceEntity.java
+module 3.0 -hospital mangment system example/hospital-mangment-system-example/src/main/java/com/codebyarunyadav/HMS/entity/PatientEntity.java
+module 5.0-spring-security/src/main/java/com/codebyarunyadav/spring_security/config/WebSecurityconfig.java
+module 5.0-spring-security/src/main/java/com/codebyarunyadav/spring_security/entity/User.java
+module 5.0-spring-security/src/main/java/com/codebyarunyadav/spring_security/repository/UserRepository.java
+module 5.0-spring-security/src/main/java/com/codebyarunyadav/spring_security/service/UserService.java
