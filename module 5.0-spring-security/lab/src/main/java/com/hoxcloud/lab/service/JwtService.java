@@ -17,13 +17,18 @@ import java.util.Date;
 public class JwtService {
     @Value("${jwt.secret}")
     private String secretKey;
-
+    @Value("${jwt.refreshToken}")
+    private String refreshTokenKey;
     @Value("${jwt.expiration}")
     private Long expiration;
+    @Value("${jwt.refreshTokenExpire}")
+    private  Long refreshTokenExpire;
 
     private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
+
+    private SecretKey getRefreshSecretKey(){return Keys.hmacShaKeyFor(refreshTokenKey.getBytes(StandardCharsets.UTF_8));}
 
     public String generateToken(UserEntity user) {
         return Jwts.builder()
@@ -35,6 +40,29 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSecretKey())
                 .compact();
+    }
+
+    public String refreshToken(UserEntity user) {
+        return Jwts.builder()
+                //.subject(String.valueOf(user.getId()))
+                .subject(user.getEmail())
+                .claim("type","REFRESH")
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpire))
+                .signWith(getRefreshSecretKey())
+                .compact();
+    }
+    public Claims extractRefreshClaim(String refreshToken)
+    {
+        return Jwts.parser()
+                .verifyWith(getRefreshSecretKey())
+                .build()
+                .parseSignedClaims(refreshToken)
+                .getPayload();
+    }
+
+    public String extractRfreshUserName(String token) {
+        return extractRefreshClaim(token).getSubject();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

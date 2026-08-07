@@ -4,6 +4,7 @@ import com.hoxcloud.lab.dto.SignUpDto;
 import com.hoxcloud.lab.dto.UserDto;
 import com.hoxcloud.lab.entity.UserEntity;
 import com.hoxcloud.lab.repository.UserRepository;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +23,16 @@ public class UserService implements UserDetailsManager {
 private final UserRepository userRepository;
 private final ModelMapper modelMapper;
 private final PasswordEncoder passwordEncoder;
+
+    public UserDto singUp(SignUpDto signUpDto) {
+     Optional<UserEntity> user=userRepository.findByEmail(signUpDto.getEmail());
+     if(user.isPresent()){ throw new BadCredentialsException("User already registered !!");
+     }
+     UserEntity toBeSaveUser=modelMapper.map(signUpDto,UserEntity.class);
+     toBeSaveUser.setPassword(passwordEncoder.encode(toBeSaveUser.getPassword()));
+     return modelMapper.map(userRepository.save(toBeSaveUser),UserDto.class);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username).orElseThrow(()->new AuthenticationException("Bad Credential") {
@@ -29,13 +40,9 @@ private final PasswordEncoder passwordEncoder;
 
     }
 
-    public UserDto singUp(SignUpDto signUpDto) {
-     Optional<UserEntity> user=userRepository.findByEmail(signUpDto.getEmail());
-     if(user.isPresent()){ throw new BadCredentialsException("User or Email Id is wrong ");
-     }
-     UserEntity toBeSaveUser=modelMapper.map(signUpDto,UserEntity.class);
-     toBeSaveUser.setPassword(passwordEncoder.encode(toBeSaveUser.getPassword()));
-     return modelMapper.map(userRepository.save(toBeSaveUser),UserDto.class);
+    public UserEntity getUserByEmailId(String userEmail) {
+
+        return userRepository.findByEmail(userEmail).orElseThrow();
     }
 
     @Override
@@ -62,4 +69,6 @@ private final PasswordEncoder passwordEncoder;
     public boolean userExists(String username) {
         return false;
     }
+
+
 }
