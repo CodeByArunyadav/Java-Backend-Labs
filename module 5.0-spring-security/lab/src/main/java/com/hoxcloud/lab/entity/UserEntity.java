@@ -1,5 +1,6 @@
 package com.hoxcloud.lab.entity;
 
+import com.hoxcloud.lab.config.PermissionMapping;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jspecify.annotations.Nullable;
@@ -8,7 +9,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -25,7 +28,9 @@ public class UserEntity implements UserDetails {
     @NonNull
     private String userName;
     @NonNull
-    private String role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Roles> roles;
 
     public UserEntity(long l, String mail, String number) {
     }
@@ -33,7 +38,23 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
+
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+        roles.forEach(role -> {
+
+            // Add permissions
+            authorities.addAll(
+                    PermissionMapping.getAuthoritiesForRole(role)
+            );
+
+            // Add role
+            authorities.add(
+                    new SimpleGrantedAuthority("ROLE_" + role.name())
+            );
+        });
+        System.out.println("AUTHORITIES = " + authorities);
+        return authorities;
     }
 
     @Override
@@ -45,6 +66,5 @@ public class UserEntity implements UserDetails {
     public String getUsername() {
         return this.email;
     }
-
 
 }

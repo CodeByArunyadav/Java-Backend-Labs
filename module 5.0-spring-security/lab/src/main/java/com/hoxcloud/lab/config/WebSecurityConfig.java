@@ -3,6 +3,7 @@ import com.hoxcloud.lab.service.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private static String[] publicRoute={"/login", "/api/auth/**", "/refresh"};
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
@@ -27,9 +29,19 @@ public class WebSecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/api/auth/**", "/refresh").permitAll()
-                        .requestMatchers("/api/user/admin").hasRole("Admin")
-                        .requestMatchers("/api/user/user").hasRole("User")
+                        .requestMatchers(publicRoute).permitAll()
+                        // Role-based authorization
+                        .requestMatchers("/api/user/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/user/user").hasAnyRole("USER","CREATOR")
+                        // Permission-based authorization
+                        .requestMatchers(HttpMethod.GET, "/api/users/**")
+                        .hasAuthority("READ_USER")
+
+                        .requestMatchers(HttpMethod.POST, "/api/users/**")
+                        .hasAuthority("WRITE_USER")
+
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/**")
+                        .hasAuthority("DELETE_USER")
                         .anyRequest().authenticated())
                 .formLogin(form -> form.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())

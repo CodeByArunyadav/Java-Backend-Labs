@@ -1,5 +1,6 @@
 package com.hoxcloud.lab.service;
 
+import com.hoxcloud.lab.entity.UserEntity;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,9 +40,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                UserDetails userDetails = userService.loadUserByUsername(userName);
+                UserEntity userDetails = userService.loadUserByUsername(userName);
 
                 System.out.println("Username: " + userName);
+                System.out.println("USER ROLES = " + userDetails.getRoles());
                 System.out.println("Validate Token: " + jwtService.validateToken(token, userDetails));
                 System.out.println("Authorities: " + userDetails.getAuthorities());
 
