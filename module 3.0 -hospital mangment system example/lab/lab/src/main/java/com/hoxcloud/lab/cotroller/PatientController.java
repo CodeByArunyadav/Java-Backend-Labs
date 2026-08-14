@@ -1,7 +1,7 @@
-package com.codebyarunyadav.HMS.cotroller;
+package com.hoxcloud.lab.cotroller;
 
-import com.codebyarunyadav.HMS.dto.PatientDTO;
-import com.codebyarunyadav.HMS.service.PatientService;
+import com.hoxcloud.lab.dto.PatientDTO;
+import com.hoxcloud.lab.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

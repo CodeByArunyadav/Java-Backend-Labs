@@ -1,6 +1,6 @@
-package com.codebyarunyadav.HMS.service;
+package com.hoxcloud.lab.service;
 
-import com.codebyarunyadav.HMS.dto.PatientDTO;
+import com.hoxcloud.lab.dto.PatientDTO;
 
 import java.util.List;
 import java.util.Map;

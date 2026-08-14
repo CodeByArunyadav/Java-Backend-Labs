@@ -1,6 +1,6 @@
-package com.codebyarunyadav.HMS.repository;
+package com.hoxcloud.lab.repository;
 
-import com.codebyarunyadav.HMS.entity.PatientEntity;
+import com.hoxcloud.lab.entity.PatientEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

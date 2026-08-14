@@ -1,4 +1,4 @@
-package com.codebyarunyadav.HMS.dto;
+package com.hoxcloud.lab.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

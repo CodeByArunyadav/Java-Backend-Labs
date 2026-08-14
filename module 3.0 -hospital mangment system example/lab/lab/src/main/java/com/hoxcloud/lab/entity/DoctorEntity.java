@@ -1,4 +1,4 @@
-package com.codebyarunyadav.HMS.entity;
+package com.hoxcloud.lab.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
