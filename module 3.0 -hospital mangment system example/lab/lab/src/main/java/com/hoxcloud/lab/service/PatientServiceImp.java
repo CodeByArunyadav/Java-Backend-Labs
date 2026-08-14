@@ -1,8 +1,8 @@
-package com.codebyarunyadav.HMS.service;
+package com.hoxcloud.lab.service;
 
-import com.codebyarunyadav.HMS.dto.PatientDTO;
-import com.codebyarunyadav.HMS.entity.PatientEntity;
-import com.codebyarunyadav.HMS.repository.PatientRepository;
+import com.hoxcloud.lab.dto.PatientDTO;
+import com.hoxcloud.lab.entity.PatientEntity;
+import com.hoxcloud.lab.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

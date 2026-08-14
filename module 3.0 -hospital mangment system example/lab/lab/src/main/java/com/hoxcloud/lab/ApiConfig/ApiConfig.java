@@ -1,4 +1,4 @@
-package com.codebyarunyadav.HMS.ApiConfig;
+package com.hoxcloud.lab.ApiConfig;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
