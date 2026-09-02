@@ -14,6 +14,10 @@
         <option value="$PROJECT_DIR$/module1.0-basic/labs/pom.xml" />
         <option value="$PROJECT_DIR$/module 5.0-spring-security/lab/pom.xml" />
         <option value="$PROJECT_DIR$/module 3.0 -hospital mangment system example/lab/lab/pom.xml" />
+        <option value="$PROJECT_DIR$/module 12.0-microservice-architecture/capstone/pom.xml" />
+        <option value="$PROJECT_DIR$/module 12.0-microservice-architecture/ecommerce/lab-inventory-service/pom.xml" />
+        <option value="$PROJECT_DIR$/module 12.0-microservice-architecture/ecommerce/lab-order-service/pom.xml" />
+        <option value="$PROJECT_DIR$/module 12.0-microservice-architecture/ecommerce/discovery-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
