@@ -7,21 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="api-gatway" />
         <module name="module1.0-basic" />
         <module name="discovery-service" />
       </profile>
-      <profile name="Annotation profile for capstone" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-        </processorPath>
-        <module name="capstone" />
-        <module name="m2-architecture-walkthrough" />
-      </profile>
-      <profile name="Annotation profile for lab-inventory-service" enabled="true">
+      <profile name="Annotation profile for lab" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -36,6 +26,17 @@
         <module name="lab-inventory-service" />
         <module name="lab" />
       </profile>
+      <profile name="Annotation profile for capstone" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+        </processorPath>
+        <module name="capstone" />
+        <module name="m2-architecture-walkthrough" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hospital-mangment-system-example" target="17" />
@@ -45,6 +46,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-gatway" options="-parameters" />
       <module name="capstone" options="-parameters" />
       <module name="capstone (1)" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
