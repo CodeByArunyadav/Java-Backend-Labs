@@ -15,6 +15,14 @@ public class OrderController {
 
     private final OrderService orderService;
 
+
+    @GetMapping("helloOrder")
+    public String getHelloMsgService()
+    {
+        return"Hello I am from order Service";
+    }
+
+
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
