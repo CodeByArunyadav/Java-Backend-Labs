@@ -10,18 +10,7 @@
         <module name="module1.0-basic" />
         <module name="discovery-service" />
       </profile>
-      <profile name="Annotation profile for capstone" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
-        </processorPath>
-        <module name="capstone" />
-        <module name="m2-architecture-walkthrough" />
-      </profile>
-      <profile name="Annotation profile for lab-inventory-service" enabled="true">
+      <profile name="Annotation profile for lab-order-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -31,10 +20,12 @@
         <module name="lab-order-service" />
         <module name="hospital-mangment-system-example" />
         <module name="lab (1)" />
+        <module name="capstone" />
         <module name="spring-security" />
         <module name="capstone (1)" />
         <module name="lab-inventory-service" />
         <module name="lab" />
+        <module name="m2-architecture-walkthrough" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
