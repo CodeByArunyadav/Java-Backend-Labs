@@ -1,9 +1,11 @@
 package com.hoxcloud.ecommerce.lab_inventory_service.controller;
 
+import com.hoxcloud.ecommerce.lab_inventory_service.DTO.OrderInventoryRequest;
 import com.hoxcloud.ecommerce.lab_inventory_service.DTO.ProductDTO;
 import com.hoxcloud.ecommerce.lab_inventory_service.service.ProductService;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
@@ -52,5 +54,23 @@ public class ProductController {
     public List<ProductDTO> getlistOfProducts()
     {
         return productService.getlistOfProducts();
+    }
+
+    @PostMapping("/reserve")
+    public ResponseEntity<Void> reserve(
+            @RequestBody OrderInventoryRequest request) {
+
+        productService.reserve(request);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/release")
+    public ResponseEntity<Void> release(
+            @RequestBody OrderInventoryRequest request) {
+
+        productService.release(request);
+
+        return ResponseEntity.ok().build();
     }
 }
