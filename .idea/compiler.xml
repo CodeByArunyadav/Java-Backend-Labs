@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="api-gatway" />
         <module name="module1.0-basic" />
         <module name="discovery-service" />
       </profile>
@@ -21,7 +22,7 @@
         <module name="capstone" />
         <module name="m2-architecture-walkthrough" />
       </profile>
-      <profile name="Annotation profile for lab-inventory-service" enabled="true">
+      <profile name="Annotation profile for lab-order-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -45,6 +46,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-gatway" options="-parameters" />
       <module name="capstone" options="-parameters" />
       <module name="capstone (1)" options="-parameters" />
       <module name="discovery-service" options="-parameters" />

@@ -2,15 +2,12 @@ package com.hoxcloud.ecommerce.lab_order_service.controller;
 
 import com.hoxcloud.ecommerce.lab_order_service.DTO.OrdersDTO;
 import com.hoxcloud.ecommerce.lab_order_service.service.OrderService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("orders")
+@RequestMapping("/core")
 public class OrderController {
 
     private final OrderService orderService;
@@ -18,6 +15,13 @@ public class OrderController {
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
+
+    @GetMapping("helloOrder")
+    public String getHelloMsgService()
+    {
+        return"Hello I am from order Service";
+    }
+
 
     @GetMapping(path = "{id}")
 
@@ -31,6 +35,21 @@ public class OrderController {
     public List<OrdersDTO> getListOfOrders()
     {
         return orderService.getListOfOrders();
+    }
+
+    @PostMapping("bookOrder")
+
+    public String createOrder(@RequestBody OrdersDTO ordersDTO)
+    {
+        return orderService.createOrder(ordersDTO);
+    }
+
+
+    @PostMapping("cancelledOrder")
+
+    public String cancelledOrder(@RequestBody OrdersDTO ordersDTO)
+    {
+        return orderService.cancelledOrder(ordersDTO);
     }
 
 }

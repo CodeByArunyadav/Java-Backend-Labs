@@ -14,5 +14,6 @@ public class ProductEntity {
     Long id;
     String name;
     String price;
-    String stock;
+    @Column(nullable = false)
+    Integer stock;
 }

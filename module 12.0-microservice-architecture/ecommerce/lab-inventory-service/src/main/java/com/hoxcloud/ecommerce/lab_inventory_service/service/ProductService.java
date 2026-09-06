@@ -1,11 +1,14 @@
 package com.hoxcloud.ecommerce.lab_inventory_service.service;
 
+import com.hoxcloud.ecommerce.lab_inventory_service.DTO.InventoryItemRequest;
+import com.hoxcloud.ecommerce.lab_inventory_service.DTO.OrderInventoryRequest;
 import com.hoxcloud.ecommerce.lab_inventory_service.DTO.ProductDTO;
 import com.hoxcloud.ecommerce.lab_inventory_service.entity.ProductEntity;
 import com.hoxcloud.ecommerce.lab_inventory_service.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +36,32 @@ public class ProductService {
 
     public List<ProductDTO> getlistOfProducts() {
 
-        return productRepository.findAll().stream().map(p->modelMapper.map(p,ProductDTO.class)).collect(Collectors.toList());
+        return productRepository.findAll().stream().map(p -> modelMapper.map(p, ProductDTO.class)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void reserve(OrderInventoryRequest request) {
+
+        for (InventoryItemRequest item : request.items()) {
+            ProductEntity product = productRepository.findById(item.productId()).orElseThrow(() -> new RuntimeException("No such item Found" + item.productId()));
+
+            if (product.getStock() < item.quantity()) {
+                throw new RuntimeException("Item Out Of Stock");
+            }
+            product.setStock(product.getStock() - item.quantity());
+        }
+    }
+
+    @Transactional
+    public void release(OrderInventoryRequest request) {
+
+        for (InventoryItemRequest item : request.items()) {
+            ProductEntity product = productRepository.findById(item.productId()).orElseThrow(() -> new RuntimeException("No such item Found" + item.productId()));
+
+            if (product.getStock() < item.quantity()) {
+                throw new RuntimeException("Item Out Of Stock");
+            }
+            product.setStock(product.getStock() + item.quantity());
+        }
     }
 }

@@ -12,5 +12,5 @@ public class ProductDTO {
     Long id;
     String name;
     String price;
-    String stock;
+    Integer stock;
 }

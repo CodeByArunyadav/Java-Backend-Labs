@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/module 12.0-microservice-architecture/ecommerce/api-gatway/api-gatway.iml" filepath="$PROJECT_DIR$/module 12.0-microservice-architecture/ecommerce/api-gatway/api-gatway.iml" />
       <module fileurl="file://$PROJECT_DIR$/m2-architecture-walkthrough/src/main/main.iml" filepath="$PROJECT_DIR$/m2-architecture-walkthrough/src/main/main.iml" />
       <module fileurl="file://$PROJECT_DIR$/module1.0-basic/src/main/main2.iml" filepath="$PROJECT_DIR$/module1.0-basic/src/main/main2.iml" />
       <module fileurl="file://$PROJECT_DIR$/module1.0-basic/src/test/test.iml" filepath="$PROJECT_DIR$/module1.0-basic/src/test/test.iml" />

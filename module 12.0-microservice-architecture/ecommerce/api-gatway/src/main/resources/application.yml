@@ -1,0 +1,30 @@
+server:
+  port: 8080  # The public entry point for your entire microservice system
+
+spring:
+  application:
+    name: API-GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+        # Route for Lab Order Service
+        - id: order-service-route
+          uri: lb://LAB-ORDER-SERVICE  # 'lb://' tells Gateway to fetch instances from Eureka using UPPERCASE IDs
+          predicates:
+            - Path=/api/v1/orders/**      # Matches any request starting with /api/orders/
+          filters:
+            - StripPrefix=2     # Strips '/api/v1' before forwarding
+
+        # Route for Lab Inventory Service
+        - id: inventory-service-route
+          uri: lb://LAB-INVENTORY-SERVICE
+          predicates:
+            - Path=/api/v1/inventory/**   # Matches any request starting with /api/inventory/
+          filters:
+            - StripPrefix=2   # Strips '/api/v1' before forwarding
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
