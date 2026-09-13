@@ -15,7 +15,7 @@ public class OrderController {
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
-
+    // testing over rest client services
     @GetMapping("helloOrder")
     public String getHelloMsgService()
     {
