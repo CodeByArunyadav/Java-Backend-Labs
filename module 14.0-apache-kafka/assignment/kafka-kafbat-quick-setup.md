@@ -1,3 +1,30 @@
+# Apache Kafka
+
+## Definition
+
+**Apache Kafka is a fast, distributed, fault-tolerant event-streaming and messaging platform** used to reliably publish, store, and process events between applications and services.
+
+Kafka is commonly used for **asynchronous communication, real-time data streaming, event-driven architectures, and high-volume data processing**.
+
+## Use Cases
+
+* **Microservices Communication** — Asynchronous communication between distributed services.
+* **Event-Driven Architecture** — Services communicate through events instead of direct service-to-service calls.
+* **Real-Time Data Streaming** — Processing and transferring data continuously in real time.
+* **Messaging** — Reliable communication between producers and consumers.
+* **Log Aggregation** — Collecting logs and events from multiple applications or systems.
+* **Event Sourcing** — Storing application events as a source of state/history.
+* **Data Pipelines** — Moving large volumes of data between applications, databases, and other systems.
+* **Large-Scale Event Processing** — Processing a high volume of events using partitions and consumer groups.
+
+### When Kafka May Not Be Required
+
+Kafka may be unnecessary for:
+
+* Simple request-response communication where REST or gRPC is sufficient.
+* Small applications with low messaging requirements.
+* Simple monolithic applications without event-streaming requirements.
+
 # Apache Kafka 4.3.0 + Kafbat UI — Ubuntu/WSL Quick Setup
 
 This guide is for a **single-node local Kafka 4.3.0 KRaft setup** installed directly in Ubuntu/WSL, with **Kafbat UI running in Docker**.
