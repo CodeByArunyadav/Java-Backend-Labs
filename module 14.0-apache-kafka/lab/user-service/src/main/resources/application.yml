@@ -2,6 +2,12 @@ spring:
   application:
     name: user-service
 
+  kafka:
+    bootstrap-servers: 172.26.234.58:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
   datasource:
     url: jdbc:postgresql://localhost:5432/userdb
     username: postgres
@@ -14,6 +20,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+# Custom Kafka Topic configuration separated at the root level
+kafka:
+  topic:
+#    user-message-events: "user-message-events"
+    user-events: "user-events"
+    user-message-events: "user-message-events"
 
 server:
   port: 8081

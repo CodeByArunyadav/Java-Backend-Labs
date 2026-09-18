@@ -2,5 +2,14 @@ spring:
   application:
     name: notification-service
 
+  kafka:
+    bootstrap-servers: 172.26.234.58:9092
+    consumer:
+      group-id: ${spring.application.name}-v1
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json:
+          trusted.packages: com.hoxcloud.*
 server:
   port: 8082
