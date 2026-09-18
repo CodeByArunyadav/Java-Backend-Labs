@@ -5,8 +5,11 @@ import com.hoxcloud.userservice.dto.UserResponse;
 import com.hoxcloud.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +20,19 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final KafkaTemplate<String,String> kafkaTemplate;
+
+    @Value("${kafka.topic.user-message-events}")
+    private String USER_MESSAGE_EVENTS;
+
+    @PostMapping("/message/{msg}")
+    public void userCreatedTest( @PathVariable String msg)
+    {
+        for (int i=1; i<10; i++)
+        {
+            kafkaTemplate.send(USER_MESSAGE_EVENTS, ""+i%2, "Hello India Mike find message number "+ i+msg);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(
