@@ -31,5 +31,14 @@ public class ApiConfig {
                 (short) 1 );
     }
 
+    @Bean
+    public NewTopic userDeleteEventsTopic() {
+        return new NewTopic(
+                "user-delete-events",    // Topic name
+                3,                     // Number of partitions
+                (short) 1             // Replication factor
+        );
+    }
+
 
 }
