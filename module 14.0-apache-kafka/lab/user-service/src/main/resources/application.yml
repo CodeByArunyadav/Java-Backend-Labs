@@ -27,6 +27,7 @@ kafka:
 #    user-message-events: "user-message-events"
     user-events: "user-events"
     user-message-events: "user-message-events"
+    user-delete-events: "user-delete-events"
 
 server:
   port: 8081

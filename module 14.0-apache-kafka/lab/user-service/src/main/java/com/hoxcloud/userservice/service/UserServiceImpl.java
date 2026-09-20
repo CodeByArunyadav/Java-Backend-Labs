@@ -1,6 +1,5 @@
 package com.hoxcloud.userservice.service;
-
-import com.hoxcloud.event.UserCreatNotification;
+import com.hoxcloud.event.UserNotification;
 import com.hoxcloud.userservice.dto.UserRequest;
 import com.hoxcloud.userservice.dto.UserResponse;
 import com.hoxcloud.userservice.entity.User;
@@ -18,12 +17,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final KafkaTemplate<Long, UserCreatNotification> kafkaTemplate;
+    private final KafkaTemplate<Long, UserNotification> kafkaTemplate;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
 
     @Value("${kafka.topic.user-events}")
     private String USER_EVENTS;
+
+    @Value("${kafka.topic.user-delete-events}")
+    private String USER_DELETE_EVENTS;
 
     @Override
     public UserResponse createUser(UserRequest request) {
@@ -36,8 +38,8 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
-        UserCreatNotification userNotification =
-                modelMapper.map(savedUser, UserCreatNotification.class);
+        UserNotification userNotification =
+                modelMapper.map(savedUser, UserNotification.class);
 
         kafkaTemplate.send(USER_EVENTS,userNotification.getId(),userNotification);
 
@@ -70,7 +72,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         User user = findUser(id);
+        UserNotification notificationEvent=modelMapper.map(user,UserNotification.class);
+        notificationEvent.setStatus(UserStatus.DELETED.name());
         userRepository.delete(user);
+        kafkaTemplate.send(USER_DELETE_EVENTS, user.getId(),notificationEvent);
     }
 
     private User findUser(Long id) {

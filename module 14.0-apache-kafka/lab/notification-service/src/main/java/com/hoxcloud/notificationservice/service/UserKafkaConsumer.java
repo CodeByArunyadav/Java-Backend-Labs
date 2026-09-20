@@ -1,7 +1,6 @@
 package com.hoxcloud.notificationservice.service;
 
 import com.hoxcloud.event.UserCreatNotification;
-import com.hoxcloud.notificationservice.event.Notification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class UserKafkaConsumer {
 
     @KafkaListener(topics = "user-events")
-    public void handleUserEventsTopic(UserCreatNotification  userCreatNotification) {
+    public void handleUserEventsTopic(UserNotification  userCreatNotification) {
 
         log.info("handleUserEventsTopic:  {}",  userCreatNotification);
     }
@@ -20,6 +19,12 @@ public class UserKafkaConsumer {
     public void handleUserMessageEventsTopic(String message) {
 
         log.info("user-message-eventsTopic1:  {}", message);
+    }
+
+    @KafkaListener(topics = "user-delete-events")
+    public void handleUserDeleteEventsTopic(UserNotification  userDeletionNotification) {
+
+        log.info("user-Delete-eventsTopic1:  {}", userDeletionNotification);
     }
 
 }

@@ -1,9 +1,9 @@
-package com.hoxcloud.notificationservice.event;
+package com.hoxcloud.event;
 
 import lombok.Data;
 
 @Data
-public class Notification {
+public class UserNotification {
 
     private Long id;
     private String email;
