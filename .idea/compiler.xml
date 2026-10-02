@@ -8,11 +8,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gatway" />
+        <module name="multi-threading-concurrency" />
         <module name="module1.0-basic" />
         <module name="user-service" />
         <module name="discovery-service" />
         <module name="notification-service" />
-        <module name="event-contracts" />
       </profile>
       <profile name="Annotation profile for lab" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -44,6 +44,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="event-contracts" target="21" />
       <module name="hospital-mangment-system-example" target="17" />
       <module name="lab-inventory-service" target="21" />
       <module name="lab-order-service" target="21" />
@@ -67,6 +68,7 @@
       <module name="lab-order-service (2)" options="-parameters" />
       <module name="m2-architecture-walkthrough" options="-parameters" />
       <module name="module1.0-basic" options="-parameters" />
+      <module name="multi-threading-concurrency" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="spring-security" options="-parameters" />
       <module name="user-service" options="-parameters" />
