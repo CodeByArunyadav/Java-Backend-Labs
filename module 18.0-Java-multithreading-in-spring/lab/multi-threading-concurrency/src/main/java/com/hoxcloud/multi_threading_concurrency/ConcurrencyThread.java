@@ -4,16 +4,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ConcurrencyThread implements Runnable{
+    private final int taskId;
+
+    public ConcurrencyThread(int taskId) {
+        this.taskId = taskId;
+    }
 
 
     @Override
     public void run() {
 
-        log.info("Thread in Running state");
+        log.info("Executing Task #{}", taskId);
+
         try {
-           Thread.sleep(4000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 }

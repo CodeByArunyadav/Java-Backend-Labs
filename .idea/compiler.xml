@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gatway" />
+        <module name="event-contracts" />
         <module name="multi-threading-concurrency" />
         <module name="module1.0-basic" />
         <module name="user-service" />
@@ -44,7 +45,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="event-contracts" target="21" />
       <module name="hospital-mangment-system-example" target="17" />
       <module name="lab-inventory-service" target="21" />
       <module name="lab-order-service" target="21" />
