@@ -32,9 +32,6 @@
 24. [Production Principles](#24-key-production-principles)
 
 ---
-
-# 1. Program vs Process vs Thread
-
 ## Program
 
 A **program** is a set of instructions stored on disk.
