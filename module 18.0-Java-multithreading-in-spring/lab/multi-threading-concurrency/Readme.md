@@ -1,4 +1,4 @@
-# Java Multithreading & Concurrency — Interview Ready Guide
+# Java Multithreading & Concurrency  
 
 > A practical, interview-focused guide to Java Multithreading, Executor Framework, Future, CompletableFuture, Spring Boot Async/Scheduling, Tomcat threading and thread safety.
 
