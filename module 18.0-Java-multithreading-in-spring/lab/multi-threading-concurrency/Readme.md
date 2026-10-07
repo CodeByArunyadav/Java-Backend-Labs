@@ -1,37 +1,47 @@
-# Java Multithreading & Concurrency — Interview Guide
+# Java Multithreading & Concurrency — Interview Ready Guide
 
-> Practical and easy-to-revise notes for Java Backend / Spring Boot interviews.
+> A practical, interview-focused guide to Java Multithreading, Executor Framework, Future, CompletableFuture, Spring Boot Async/Scheduling, Tomcat threading and thread safety.
+
+---
+
+## 📚 Table of Contents
+
+1. [Program vs Process vs Thread](#1-program-vs-process-vs-thread)
+2. [Single vs Multithreaded](#2-single-vs-multithreaded-application)
+3. [Java Thread States](#3-java-thread-states)
+4. [Runnable vs Callable](#4-runnable-vs-callable)
+5. [Executor Framework](#5-java-executor-framework)
+6. [Executor Hierarchy](#6-executor-hierarchy)
+7. [ExecutorService](#7-executorservice)
+8. [ThreadPoolExecutor](#8-threadpoolexecutor)
+9. [Future](#9-future)
+10. [CompletableFuture](#10-completablefuture)
+11. [Future vs CompletableFuture](#11-future-vs-completablefuture)
+12. [Combining CompletableFuture](#12-combining-completablefuture)
+13. [Exception Handling](#13-completablefuture-exception-handling)
+14. [Spring @Scheduled](#14-spring-boot-task-scheduling)
+15. [@Scheduled Parameters](#15-scheduled-parameters)
+16. [Spring @Async](#16-async-in-spring-boot)
+17. [Tomcat Threading Model](#17-tomcat-threading-model)
+18. [Blocking vs Async](#18-tomcat-blocking-problem)
+19. [Spring Bean Thread Safety](#19-spring-bean-thread-safety)
+20. [CPU vs I/O Bound](#20-cpu-bound-vs-io-bound)
+21. [Real-World Example](#21-simple-real-world-example)
+22. [Interview Questions](#22-common-interview-questions)
+23. [Quick Revision](#23-quick-revision-cheat-sheet)
+24. [Production Principles](#24-key-production-principles)
 
 ---
 
-## Table of Contents
+# 1. Program vs Process vs Thread
 
-1. Program vs Process vs Thread
-2. Single vs Multithreaded Application
-3. Java Thread States
-4. Runnable vs Callable
-5. Java Executor Framework
-6. Executor vs ExecutorService
-7. ThreadPoolExecutor
-8. Future
-9. CompletableFuture
-10. Future vs CompletableFuture
-11. Combining CompletableFuture
-12. Exception Handling
-13. Spring Boot Scheduling
-14. `@Scheduled`
-15. `@Async`
-16. Tomcat Threading Model
-17. Blocking vs Async
-18. Spring Bean Thread Safety
-19. CPU-Bound vs I/O-Bound
-20. Real-World Example
-21. Interview Questions
-22. Quick Revision Cheat Sheet
-23. Production Best Practices
-24. 30-Second Interview Summary
+## Program
 
----
+A **program** is a set of instructions stored on disk.
+
+Example:
+
+```text 
 
 # 1. Program vs Process vs Thread
 
