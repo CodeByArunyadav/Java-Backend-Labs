@@ -1,3 +1,1889 @@
+# Java Multithreading & Concurrency — Interview Guide
+
+> Practical and easy-to-revise notes for Java Backend / Spring Boot interviews.
+
+---
+
+## Table of Contents
+
+1. Program vs Process vs Thread
+2. Single vs Multithreaded Application
+3. Java Thread States
+4. Runnable vs Callable
+5. Java Executor Framework
+6. Executor vs ExecutorService
+7. ThreadPoolExecutor
+8. Future
+9. CompletableFuture
+10. Future vs CompletableFuture
+11. Combining CompletableFuture
+12. Exception Handling
+13. Spring Boot Scheduling
+14. `@Scheduled`
+15. `@Async`
+16. Tomcat Threading Model
+17. Blocking vs Async
+18. Spring Bean Thread Safety
+19. CPU-Bound vs I/O-Bound
+20. Real-World Example
+21. Interview Questions
+22. Quick Revision Cheat Sheet
+23. Production Best Practices
+24. 30-Second Interview Summary
+
+---
+
+# 1. Program vs Process vs Thread
+
+## Program
+
+A **program** is a set of instructions stored on disk.
+
+Example:
+
+```text
+MySpringBootApplication.jar
+```
+
+## Process
+
+A **process** is a running instance of a program.
+
+```text
+PROGRAM
+   |
+   v
+PROCESS
+   |
+   +---- Memory
+   +---- Resources
+   +---- Threads
+```
+
+## Thread
+
+A **thread** is a lightweight unit of execution inside a process.
+
+```text
+                 JAVA PROCESS
+                      |
+        +-------------+-------------+
+        |             |             |
+        v             v             v
+    Thread 1      Thread 2      Thread 3
+        |             |             |
+        +-------------+-------------+
+                      |
+                     CPU
+```
+
+### Interview Answer
+
+> A process is an independent running application, while a thread is a lightweight execution unit inside a process. Multiple threads inside the same process share process resources such as heap memory.
+
+---
+
+# 2. Single vs Multithreaded Application
+
+## Single Thread
+
+One task executes at a time.
+
+```text
+Main Thread
+    |
+    +---- Task 1
+    |
+    +---- Task 2
+    |
+    +---- Task 3
+```
+
+If Task 1 takes 5 seconds, Task 2 waits.
+
+---
+
+## Multithreaded
+
+Multiple tasks can make progress concurrently.
+
+```text
+                Application
+                     |
+          +----------+----------+
+          |          |          |
+          v          v          v
+       Thread 1   Thread 2   Thread 3
+          |          |          |
+          +----------+----------+
+                     |
+                    CPU
+```
+
+---
+
+## Important CPU Point
+
+An 8-core CPU can execute up to approximately 8 threads simultaneously on 8 cores at one instant.
+
+But an application can have much more than 8 threads.
+
+```text
+8 CPU CORES
+
+Core 1  --> Thread A
+Core 2  --> Thread B
+Core 3  --> Thread C
+Core 4  --> Thread D
+Core 5  --> Thread E
+Core 6  --> Thread F
+Core 7  --> Thread G
+Core 8  --> Thread H
+
+Other runnable threads
+        |
+        v
+OS Scheduler
+        |
+        v
+CPU time is scheduled among them
+```
+
+### Interview Trap
+
+**Question:** If a machine has 8 CPU cores, can Java have only 8 threads?
+
+**Answer:** No.
+
+Java can have hundreds or thousands of threads. Only a limited number can execute simultaneously based on available CPU cores.
+
+---
+
+# 3. Java Thread States
+
+Java provides six thread states:
+
+```text
+NEW
+RUNNABLE
+BLOCKED
+WAITING
+TIMED_WAITING
+TERMINATED
+```
+
+## Thread Lifecycle
+
+```text
+             +------+
+             | NEW  |
+             +------+
+                |
+              start()
+                |
+                v
+          +-----------+
+          | RUNNABLE  |
+          +-----------+
+           |    |    |
+           |    |    |
+           |    |    +-------------------+
+           |    |                        |
+           |    v                        v
+           |  WAITING              TIMED_WAITING
+           |    |                        |
+           |    +------------+-----------+
+           |                 |
+           |                 v
+           |             RUNNABLE
+           |
+           v
+        BLOCKED
+           |
+           v
+        RUNNABLE
+           |
+           v
+      TERMINATED
+```
+
+## State Meaning
+
+| State | Meaning |
+|---|---|
+| NEW | Thread created but not started |
+| RUNNABLE | Ready/running under JVM/OS scheduling |
+| BLOCKED | Waiting to acquire a monitor lock |
+| WAITING | Waiting indefinitely for another thread |
+| TIMED_WAITING | Waiting for a specified time |
+| TERMINATED | Execution completed |
+
+### Example
+
+```java
+Thread thread = new Thread(() -> {
+    System.out.println("Running...");
+});
+
+System.out.println(thread.getState()); // NEW
+
+thread.start();
+
+System.out.println(thread.getState()); // usually RUNNABLE
+```
+
+### Interview Answer
+
+> A Java thread can be NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING or TERMINATED depending on its lifecycle and what it is waiting for.
+
+---
+
+# 4. Runnable vs Callable
+
+Both are used to define work that can be executed by another thread.
+
+## Runnable
+
+Use `Runnable` when you do not need a return value.
+
+```java
+Runnable task = () -> {
+    System.out.println("Processing order...");
+};
+
+new Thread(task).start();
+```
+
+Runnable's method:
+
+```java
+void run();
+```
+
+### Important Points
+
+- `run()` returns `void`
+- Does not return a result
+- Cannot directly throw a checked exception
+- Commonly used with `ExecutorService`
+
+---
+
+## Callable
+
+Use `Callable<V>` when the task returns a result.
+
+```java
+Callable<Integer> task = () -> {
+    return 10 + 20;
+};
+```
+
+Callable's method:
+
+```java
+V call() throws Exception;
+```
+
+Example:
+
+```java
+ExecutorService executor =
+        Executors.newFixedThreadPool(2);
+
+Future<Integer> future =
+        executor.submit(() -> 10 + 20);
+
+Integer result = future.get();
+
+System.out.println(result); // 30
+
+executor.shutdown();
+```
+
+---
+
+## Runnable vs Callable
+
+| Feature | Runnable | Callable |
+|---|---|---|
+| Method | `run()` | `call()` |
+| Return value | No | Yes |
+| Checked exception | No | Yes |
+| Result | None | Usually through `Future<V>` |
+| Common usage | Thread / Executor | ExecutorService |
+
+### Interview Answer
+
+> Runnable is suitable for tasks without a return value, while Callable is suitable when a task needs to return a result or throw a checked exception.
+
+---
+
+# 5. Java Executor Framework
+
+Java introduced the Executor Framework in Java 5 under:
+
+```java
+java.util.concurrent
+```
+
+Instead of manually creating a new thread for every task:
+
+```java
+new Thread(task).start();
+```
+
+we can use a thread pool.
+
+## Why Executor Framework?
+
+```text
+              TASK
+                |
+                v
+        TASK SUBMISSION
+                |
+                v
+             EXECUTOR
+                |
+                v
+           THREAD POOL
+                |
+       +--------+--------+
+       |        |        |
+       v        v        v
+    Worker   Worker   Worker
+       |        |        |
+       +--------+--------+
+                |
+                v
+             RESULT
+```
+
+### Benefits
+
+- Reuses threads
+- Reduces thread creation overhead
+- Controls concurrency
+- Provides task queues
+- Supports task cancellation
+- Provides lifecycle management
+- Supports `Callable` and `Future`
+
+### Interview Answer
+
+> The Executor Framework separates task submission from thread management. Instead of manually creating threads, tasks are submitted to an executor which manages worker threads and their execution.
+
+---
+
+# 6. Executor vs ExecutorService
+
+## Executor
+
+`Executor` is the basic interface.
+
+```java
+Executor executor = command -> {
+    new Thread(command).start();
+};
+
+executor.execute(() ->
+        System.out.println("Task running")
+);
+```
+
+Main method:
+
+```java
+void execute(Runnable command);
+```
+
+---
+
+## ExecutorService
+
+`ExecutorService` extends `Executor`.
+
+It provides additional functionality such as:
+
+- `submit()`
+- `shutdown()`
+- `shutdownNow()`
+- `invokeAll()`
+- `invokeAny()`
+
+Example:
+
+```java
+ExecutorService executor =
+        Executors.newFixedThreadPool(3);
+
+executor.submit(() -> {
+    System.out.println("Task executed");
+});
+
+executor.shutdown();
+```
+
+---
+
+## execute() vs submit()
+
+### execute()
+
+```java
+executor.execute(task);
+```
+
+Returns:
+
+```text
+void
+```
+
+### submit()
+
+```java
+Future<Integer> future =
+        executor.submit(callableTask);
+```
+
+Returns:
+
+```text
+Future
+```
+
+### Interview Answer
+
+> `execute()` is mainly used for submitting Runnable tasks without a Future, while `submit()` supports Runnable and Callable and returns a Future.
+
+---
+
+# 7. ThreadPoolExecutor
+
+`ThreadPoolExecutor` is one of the most important implementations of `ExecutorService`.
+
+It manages:
+
+- Core pool size
+- Maximum pool size
+- Work queue
+- Keep-alive time
+- Rejection policy
+- Worker threads
+
+---
+
+## Example
+
+```java
+ThreadPoolExecutor executor =
+        new ThreadPoolExecutor(
+                3,
+                4,
+                2,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(3),
+                new ThreadPoolExecutor.DiscardOldestPolicy()
+        );
+```
+
+Here:
+
+```text
+Core Pool Size       = 3
+Maximum Pool Size    = 4
+Keep Alive Time      = 2 seconds
+Queue Capacity       = 3
+Rejected Policy      = DiscardOldestPolicy
+```
+
+---
+
+## ThreadPool Execution Flow
+
+```text
+                 submit(task)
+                      |
+                      v
+          +-----------------------+
+          | Core thread available?|
+          +-----------------------+
+               |           |
+              YES          NO
+               |           |
+               v           v
+           Execute       Queue
+                          |
+                          v
+                    Queue Full?
+                     |       |
+                    NO      YES
+                     |       |
+                     v       v
+                   Wait   Max threads?
+                            |      |
+                           NO     YES
+                            |      |
+                            v      v
+                       New Worker Reject
+
+```
+
+### Important
+
+The exact behavior depends on the configured queue and executor implementation.
+
+### Interview Answer
+
+> ThreadPoolExecutor manages worker threads and a task queue. It controls core threads, maximum threads, queue capacity, keep-alive time and rejection behavior.
+
+---
+
+# 8. Future
+
+When a Callable is submitted:
+
+```java
+Future<Integer> future =
+        executor.submit(() -> 100);
+```
+
+The `Future` represents a result that may be available later.
+
+Think of it as a **ticket for a future result**.
+
+```text
+Main Thread
+    |
+    | submit(Callable)
+    v
+Executor
+    |
+    v
+Worker Thread
+    |
+    |---- Calculate
+    |
+    v
+Result
+```
+
+The main thread immediately receives:
+
+```text
+Future<Integer>
+```
+
+---
+
+## Future.get()
+
+```java
+Integer result = future.get();
+```
+
+If the result is not ready, `get()` can block.
+
+```text
+Main Thread
+    |
+    v
+future.get()
+    |
+    +---- Result ready ------> Continue
+    |
+    +---- Result not ready --> BLOCK
+```
+
+### Interview Answer
+
+> Future represents the result of an asynchronous computation. Its main limitation is that methods such as `get()` can block the calling thread.
+
+---
+
+# 9. CompletableFuture
+
+`CompletableFuture` was introduced in Java 8.
+
+It implements `Future` and adds asynchronous composition.
+
+## Future
+
+```java
+Future<Integer> future =
+        executor.submit(() -> 10);
+
+Integer result = future.get();
+```
+
+Potential problem:
+
+```text
+get()
+ |
+ v
+BLOCKING
+```
+
+---
+
+## CompletableFuture
+
+```java
+CompletableFuture
+        .supplyAsync(() -> 10)
+        .thenApply(value -> value * 2)
+        .thenAccept(System.out::println);
+```
+
+Output:
+
+```text
+20
+```
+
+---
+
+## CompletableFuture Pipeline
+
+```text
+supplyAsync()
+      |
+      v
+   Result
+      |
+      v
+thenApply()
+      |
+      v
+ Transformed Result
+      |
+      v
+thenAccept()
+      |
+      v
+   Consumer
+```
+
+---
+
+## Important Methods
+
+### supplyAsync()
+
+Starts asynchronous work that returns a result.
+
+```java
+CompletableFuture<Integer> future =
+        CompletableFuture.supplyAsync(() -> 10);
+```
+
+### thenApply()
+
+Transforms a result.
+
+```java
+future.thenApply(value -> value * 2);
+```
+
+### thenAccept()
+
+Consumes a result.
+
+```java
+future.thenAccept(System.out::println);
+```
+
+### thenRun()
+
+Runs an action after completion.
+
+```java
+future.thenRun(() ->
+        System.out.println("Completed"));
+```
+
+---
+
+# 10. Future vs CompletableFuture
+
+| Feature | Future | CompletableFuture |
+|---|---|---|
+| Introduced | Java 5 | Java 8 |
+| Async result | Yes | Yes |
+| `get()` | Yes | Yes |
+| Chaining | Limited | Yes |
+| Callbacks | Limited | Yes |
+| Combine tasks | Difficult | Easy |
+| Exception handling | Basic | Better |
+| Manual completion | No | Yes |
+
+### Interview Answer
+
+> Future represents an asynchronous result but is mainly retrieval-oriented. CompletableFuture provides chaining, callbacks, combining multiple asynchronous operations and better exception handling.
+
+---
+
+# 11. Combining CompletableFuture
+
+## thenCombine()
+
+Use `thenCombine()` when two independent tasks produce results that need to be combined.
+
+```java
+CompletableFuture<Integer> price =
+        CompletableFuture.supplyAsync(() -> 100);
+
+CompletableFuture<Integer> tax =
+        CompletableFuture.supplyAsync(() -> 18);
+
+CompletableFuture<Integer> total =
+        price.thenCombine(
+                tax,
+                (p, t) -> p + t
+        );
+
+total.thenAccept(System.out::println);
+```
+
+Output:
+
+```text
+118
+```
+
+Flow:
+
+```text
+Price Service --------\
+                       \
+                        > thenCombine() --> Total
+                       /
+Tax Service ----------/
+```
+
+---
+
+## allOf()
+
+Use when multiple futures need to complete.
+
+```java
+CompletableFuture<Void> all =
+        CompletableFuture.allOf(
+                task1,
+                task2,
+                task3
+        );
+```
+
+Flow:
+
+```text
+Task 1 -----\
+Task 2 ------+----> allOf() ----> Continue
+Task 3 -----/
+```
+
+---
+
+## anyOf()
+
+Completes when any supplied future completes.
+
+```java
+CompletableFuture<Object> first =
+        CompletableFuture.anyOf(
+                task1,
+                task2,
+                task3
+        );
+```
+
+Flow:
+
+```text
+Task 1 -----\
+Task 2 ------+----> anyOf() ----> First completed result
+Task 3 -----/
+```
+
+---
+
+# 12. CompletableFuture Exception Handling
+
+Example:
+
+```java
+CompletableFuture
+        .supplyAsync(() -> {
+
+            throw new RuntimeException(
+                    "Service failed"
+            );
+
+        })
+        .exceptionally(ex -> {
+
+            System.out.println(
+                    ex.getMessage()
+            );
+
+            return 0;
+        });
+```
+
+Important methods:
+
+```text
+exceptionally()
+handle()
+whenComplete()
+```
+
+### Interview Answer
+
+> CompletableFuture provides methods such as `exceptionally()`, `handle()` and `whenComplete()` for handling failures and completion events in asynchronous pipelines.
+
+---
+
+# 13. Spring Boot Task Scheduling
+
+Spring Boot supports scheduled tasks using:
+
+```java
+@EnableScheduling
+```
+
+and:
+
+```java
+@Scheduled
+```
+
+Example:
+
+```java
+@Configuration
+@EnableScheduling
+public class SchedulingConfig {
+}
+```
+
+Scheduled task:
+
+```java
+@Component
+public class CleanupJob {
+
+    @Scheduled(fixedDelay = 5000)
+    public void cleanup() {
+
+        System.out.println(
+                "Cleanup running..."
+        );
+    }
+}
+```
+
+---
+
+# 14. @Scheduled Parameters
+
+## fixedRate
+
+The interval is measured between the start times of executions.
+
+```java
+@Scheduled(fixedRate = 5000)
+public void task() {
+}
+```
+
+Concept:
+
+```text
+START
+  |
+  |---- 5 sec ----|
+                  START
+                    |
+                    |---- 5 sec ----|
+                                   START
+```
+
+---
+
+## fixedDelay
+
+The delay starts after the previous execution finishes.
+
+```java
+@Scheduled(fixedDelay = 5000)
+public void task() {
+}
+```
+
+Concept:
+
+```text
+START
+  |
+  +---- TASK ----+
+                 |
+                END
+                 |
+                 +---- 5 sec ----+
+                                |
+                              START
+```
+
+---
+
+## initialDelay
+
+Delays the first execution.
+
+```java
+@Scheduled(
+        fixedRate = 5000,
+        initialDelay = 10000
+)
+public void task() {
+}
+```
+
+---
+
+## cron
+
+Used for calendar-based schedules.
+
+```java
+@Scheduled(cron = "0 0 * * * *")
+public void hourlyTask() {
+}
+```
+
+---
+
+# 15. @Async
+
+Spring provides `@Async` for asynchronous method execution.
+
+Enable it:
+
+```java
+@Configuration
+@EnableAsync
+public class AsyncConfig {
+}
+```
+
+Use it:
+
+```java
+@Service
+public class NotificationService {
+
+    @Async
+    public void sendEmail() {
+
+        // Long-running operation
+
+    }
+}
+```
+
+---
+
+## Custom Executor
+
+For production applications, configure a controlled executor.
+
+```java
+@Configuration
+@EnableAsync
+public class AsyncConfig {
+
+    @Bean("taskExecutor")
+    public Executor taskExecutor() {
+
+        ThreadPoolTaskExecutor executor =
+                new ThreadPoolTaskExecutor();
+
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(100);
+
+        executor.setThreadNamePrefix(
+                "async-"
+        );
+
+        executor.initialize();
+
+        return executor;
+    }
+}
+```
+
+Use it:
+
+```java
+@Async("taskExecutor")
+public void sendEmail() {
+
+    // Async work
+
+}
+```
+
+---
+
+## Why Custom Executor?
+
+A custom executor provides control over:
+
+- Thread count
+- Queue capacity
+- Thread naming
+- Rejection handling
+- Resource usage
+- Production monitoring
+
+### Interview Answer
+
+> A custom executor allows us to control asynchronous workload instead of relying on an uncontrolled or unsuitable default executor configuration.
+
+---
+
+# 16. Tomcat Threading Model
+
+Tomcat processes HTTP requests using worker threads.
+
+```text
+Client 1 ----\
+Client 2 -----\
+Client 3 ------> Tomcat Thread Pool
+Client 4 -----/        |
+                       |
+              +--------+--------+
+              |        |        |
+              v        v        v
+           Thread 1  Thread 2  Thread 3
+              |        |        |
+              +--------+--------+
+                       |
+                       v
+                 Controller
+                       |
+                       v
+                    Service
+```
+
+---
+
+## Request Lifecycle
+
+```text
+HTTP Request
+      |
+      v
+Tomcat Thread Pool
+      |
+      v
+Worker Thread
+      |
+      v
+Controller
+      |
+      v
+Service
+      |
+      v
+Repository / External API
+      |
+      v
+Response
+      |
+      v
+Thread returned to pool
+```
+
+---
+
+# 17. Tomcat Blocking Problem
+
+Suppose a request performs a slow database operation.
+
+```text
+Request
+   |
+   v
+Tomcat Worker Thread
+   |
+   +---- Database Call
+   |
+   +---- Waiting 10 seconds
+   |
+   v
+Thread remains occupied
+```
+
+If many requests do this:
+
+```text
+Request 1 --> Thread 1 --> Slow DB
+Request 2 --> Thread 2 --> Slow DB
+Request 3 --> Thread 3 --> Slow DB
+Request 4 --> Thread 4 --> Slow DB
+...
+Request N --> Waiting
+```
+
+The available request threads can become exhausted.
+
+### Interview Answer
+
+> In a blocking application, a Tomcat worker thread remains occupied while waiting for a database or external service. If too many requests block simultaneously, the request thread pool can become exhausted and throughput suffers.
+
+---
+
+# 18. Async Request Concept
+
+The idea behind asynchronous processing is to avoid holding an HTTP worker thread unnecessarily when the architecture supports it.
+
+```text
+Client
+  |
+  v
+Tomcat Thread
+  |
+  +---- Submit long-running work
+  |
+  +---- Release request-processing thread
+             |
+             v
+        Async Executor
+             |
+             v
+        Worker Thread
+             |
+             v
+       Long-running Task
+```
+
+Important:
+
+`@Async` and servlet asynchronous request processing are related concepts but are not exactly the same thing.
+
+- `@Async` executes a Spring method asynchronously.
+- Servlet async mechanisms can release the request-processing thread while work continues.
+- Both still require proper executor/resource management.
+
+---
+
+# 19. Spring Bean Thread Safety
+
+Spring beans are singleton-scoped by default.
+
+That means one bean instance can serve multiple requests concurrently.
+
+```text
+Request 1 ----\
+Request 2 -----\
+Request 3 ------> Singleton Service
+Request 4 -----/
+```
+
+Therefore, avoid storing request-specific mutable state in instance fields.
+
+---
+
+## Bad Example
+
+```java
+@Service
+public class UserService {
+
+    private String currentUser;
+
+    public void process(String user) {
+
+        currentUser = user;
+
+        // Processing
+
+    }
+}
+```
+
+Possible problem:
+
+```text
+Request A
+    |
+    +--> currentUser = Arun
+
+Request B
+    |
+    +--> currentUser = Rahul
+
+Request A
+    |
+    +--> currentUser may now be Rahul
+```
+
+This is unsafe shared mutable state.
+
+---
+
+## Better
+
+```java
+@Service
+public class UserService {
+
+    public void process(String user) {
+
+        String currentUser = user;
+
+        // Processing
+
+    }
+}
+```
+
+Request-specific state should normally be kept in:
+
+- Method parameters
+- Local variables
+- Proper request/context objects
+
+### Interview Answer
+
+> Spring singleton beans are shared by multiple request threads, so singleton scope does not automatically make a bean thread-safe. Services should generally be stateless and avoid unsafe mutable shared state.
+
+---
+
+# 20. CPU-Bound vs I/O-Bound
+
+## CPU-Bound
+
+Examples:
+
+- Complex calculations
+- Image processing
+- Compression
+- Encryption
+
+The task spends most of its time using CPU.
+
+```text
+CPU  -> Busy
+I/O  -> Low
+```
+
+---
+
+## I/O-Bound
+
+Examples:
+
+- Database calls
+- REST API calls
+- File operations
+- Network calls
+
+The thread can spend significant time waiting for external resources.
+
+```text
+CPU  -> Waiting
+I/O  -> Waiting / Active
+```
+
+### Interview Answer
+
+> CPU-bound tasks are limited mainly by processor capacity, while I/O-bound tasks spend significant time waiting for external resources. Thread-pool sizing should consider the workload instead of blindly using the same pool size everywhere.
+
+---
+
+# 21. Simple Real-World Example
+
+Imagine an e-commerce API:
+
+```text
+POST /orders
+```
+
+After creating an order:
+
+1. Save the order
+2. Send email
+3. Publish Kafka event
+4. Update analytics
+
+---
+
+## Synchronous Approach
+
+```text
+POST /orders
+      |
+      v
+Save DB
+      |
+      v
+Send Email
+      |
+      v
+Publish Kafka
+      |
+      v
+Update Analytics
+      |
+      v
+Response
+```
+
+The request thread waits for all operations.
+
+---
+
+## Possible Async Design
+
+```text
+              POST /orders
+                   |
+                   v
+              Save Order
+                   |
+          +--------+--------+
+          |                 |
+          v                 v
+       Response       Async Processing
+                           |
+              +------------+------------+
+              |            |            |
+              v            v            v
+          Send Email    Kafka       Analytics
+```
+
+The exact architecture depends on consistency and failure requirements.
+
+> **Important:** Do not make everything asynchronous just because it can be asynchronous.
+
+---
+
+# 22. Complete Java Concurrency Picture
+
+```text
+                         TASK
+                           |
+                           v
+                       EXECUTOR
+                           |
+                           v
+                    EXECUTOR SERVICE
+                           |
+                           v
+                      THREAD POOL
+                           |
+              +------------+------------+
+              |            |            |
+              v            v            v
+          Worker 1     Worker 2     Worker 3
+              |            |            |
+              +------------+------------+
+                           |
+                           v
+                       EXECUTION
+                           |
+                 +---------+---------+
+                 |                   |
+                 v                   v
+              Future        CompletableFuture
+                                     |
+                           +---------+---------+
+                           |                   |
+                           v                   v
+                       Chaining            Combining
+```
+
+---
+
+# 23. Spring Boot Complete Picture
+
+```text
+                    HTTP CLIENT
+                         |
+                         v
+                TOMCAT THREAD POOL
+                         |
+                         v
+                    CONTROLLER
+                         |
+                         v
+                      SERVICE
+                         |
+          +--------------+--------------+
+          |              |              |
+          v              v              v
+       Database        Redis          Kafka
+
+                         |
+                         v
+                    @Async / Executor
+                         |
+                         v
+                    Worker Threads
+
+@Scheduled
+    |
+    v
+Task Scheduler
+    |
+    v
+Scheduled Task
+```
+
+---
+
+# 24. Common Interview Questions
+
+## Q1. What is multithreading?
+
+> Multithreading is the execution of multiple threads within a process so that multiple tasks can make progress concurrently.
+
+---
+
+## Q2. Process vs Thread?
+
+> A process is an independent running application with its own resources, while a thread is a lightweight execution unit inside a process and shares process resources.
+
+---
+
+## Q3. Can an 8-core CPU run 100 threads?
+
+> Yes. The application can have 100 threads, but only a limited number can execute simultaneously on the available CPU cores. The OS scheduler manages CPU time among runnable threads.
+
+---
+
+## Q4. Runnable vs Callable?
+
+> Runnable does not return a result and cannot directly throw checked exceptions. Callable returns a value and can throw checked exceptions.
+
+---
+
+## Q5. Why use ExecutorService?
+
+> ExecutorService separates task submission from thread management and allows us to reuse worker threads through thread pools instead of creating a new thread for every task.
+
+---
+
+## Q6. execute() vs submit()?
+
+```text
+execute(Runnable)
+    |
+    +---- No Future
+
+submit(Runnable / Callable)
+    |
+    +---- Future
+```
+
+---
+
+## Q7. What is Future?
+
+> Future represents the result of an asynchronous computation. It allows us to check completion, cancel a task and retrieve the result, but `get()` can block.
+
+---
+
+## Q8. Why CompletableFuture?
+
+> CompletableFuture provides asynchronous composition, chaining, combining multiple operations and exception handling.
+
+---
+
+## Q9. Is CompletableFuture always non-blocking?
+
+> No. Its API supports asynchronous composition, but methods such as `get()` and `join()` can block. The underlying tasks also consume executor threads.
+
+---
+
+## Q10. What is ThreadPoolExecutor?
+
+> ThreadPoolExecutor manages worker threads and a task queue. It provides control over core pool size, maximum pool size, queue, keep-alive time and rejection policy.
+
+---
+
+## Q11. fixedRate vs fixedDelay?
+
+> `fixedRate` schedules executions based on the start time of previous executions, while `fixedDelay` waits for the previous execution to finish and then waits for the configured delay.
+
+---
+
+## Q12. Why configure a custom executor for @Async?
+
+> A custom executor provides controlled thread and queue capacity and makes asynchronous execution more predictable in production.
+
+---
+
+## Q13. Are Spring singleton beans automatically thread-safe?
+
+> No. Singleton means one shared instance, not automatically thread-safe. We should avoid unsafe mutable shared state and design services to be stateless.
+
+---
+
+## Q14. What happens when a ThreadPoolExecutor queue is full?
+
+> If the queue is full and the pool has not reached its maximum size, additional workers can be created up to the maximum. Once the maximum is reached, the configured rejection policy is applied.
+
+---
+
+## Q15. Why use a thread pool instead of creating threads manually?
+
+> A thread pool reuses threads, reduces thread-creation overhead and provides controlled resource management such as pool size, queue capacity and rejection policies.
+
+---
+
+# 25. Quick Revision Cheat Sheet
+
+| Topic | Remember |
+|---|---|
+| Process | Running application |
+| Thread | Execution unit inside process |
+| Runnable | Task without result |
+| Callable | Task with result |
+| Executor | Basic task execution abstraction |
+| ExecutorService | Task submission + lifecycle + Future |
+| ThreadPoolExecutor | Worker pool + queue + rejection |
+| Future | Async result; `get()` may block |
+| CompletableFuture | Async chaining and composition |
+| `supplyAsync()` | Start async task with result |
+| `thenApply()` | Transform result |
+| `thenAccept()` | Consume result |
+| `thenRun()` | Run action after completion |
+| `thenCombine()` | Combine two futures |
+| `allOf()` | Wait for multiple futures |
+| `anyOf()` | First completed future |
+| `@Scheduled` | Scheduled Spring task |
+| `@Async` | Asynchronous Spring method |
+| Tomcat Thread Pool | HTTP request worker threads |
+| Singleton Bean | Shared Spring object |
+| Stateless Service | Safer design for concurrent requests |
+
+---
+
+# 26. Production Best Practices
+
+## 1. Don't create unlimited threads
+
+Avoid creating a new thread for every task.
+
+```java
+new Thread(task).start();
+```
+
+Instead, prefer controlled executors/thread pools.
+
+---
+
+## 2. Prefer controlled thread pools
+
+Consider:
+
+```text
+Core Pool Size
+Maximum Pool Size
+Queue Capacity
+Keep Alive Time
+Rejection Policy
+```
+
+---
+
+## 3. Choose pool size based on workload
+
+CPU-bound and I/O-bound workloads behave differently.
+
+---
+
+## 4. Avoid unnecessary blocking
+
+Avoid unnecessary:
+
+```java
+future.get();
+```
+
+inside an asynchronous pipeline.
+
+---
+
+## 5. Configure async executors
+
+Prefer:
+
+```java
+@Async("taskExecutor")
+```
+
+with a properly configured executor.
+
+---
+
+## 6. Monitor thread pools
+
+Useful metrics include:
+
+```text
+Active Threads
+Pool Size
+Queue Size
+Completed Tasks
+Rejected Tasks
+Task Execution Time
+```
+
+---
+
+## 7. Keep Spring services stateless
+
+Avoid request-specific mutable instance fields.
+
+Bad:
+
+```java
+private String currentUser;
+```
+
+---
+
+## 8. Understand downstream capacity
+
+Async execution does not remove resource usage.
+
+For example:
+
+```text
+1000 Async Tasks
+        |
+        v
+1000 Database Calls
+        |
+        v
+Database Overload
+```
+
+Async can improve concurrency but can also overload downstream systems if not controlled.
+
+---
+
+# 27. Interview Mental Model
+
+Remember this flow:
+
+```text
+TASK
+ |
+ v
+EXECUTOR
+ |
+ v
+THREAD POOL
+ |
+ +---- Worker Thread
+ |
+ +---- Worker Thread
+ |
+ +---- Worker Thread
+ |
+ v
+EXECUTION
+ |
+ +---- Future
+ |
+ +---- CompletableFuture
+ |
+ v
+RESULT
+```
+
+---
+
+## Spring Boot Mental Model
+
+```text
+HTTP REQUEST
+     |
+     v
+TOMCAT THREAD POOL
+     |
+     v
+CONTROLLER
+     |
+     +---- Synchronous Work
+     |
+     +---- Executor / @Async
+     |
+     +---- CompletableFuture
+     |
+     v
+DATABASE / API / KAFKA / REDIS
+```
+
+---
+
+# 28. 30-Second Interview Summary
+
+> Java multithreading allows multiple tasks to execute concurrently. Instead of manually creating threads, Java provides the Executor Framework and thread pools for controlled task execution. Runnable is used for tasks without a result, while Callable returns a result through Future. Future can block on `get()`, whereas CompletableFuture provides asynchronous chaining, combining and exception handling. In Spring Boot, `@Async` and scheduling can use configured executors, while Tomcat uses worker threads to process HTTP requests. Because Spring beans are singleton by default, shared mutable state must be handled carefully.
+
+---
+
+# 29. How to Answer Multithreading Questions
+
+Use this interview formula:
+
+```text
+WHAT
+ |
+ v
+WHY
+ |
+ v
+HOW
+ |
+ v
+SIMPLE EXAMPLE
+ |
+ v
+REAL-WORLD USE CASE
+ |
+ v
+TRADE-OFF / PITFALL
+```
+
+Example:
+
+## What is CompletableFuture?
+
+### What?
+
+> CompletableFuture represents an asynchronous computation.
+
+### Why?
+
+> It allows us to compose asynchronous operations without relying entirely on blocking calls.
+
+### How?
+
+Using:
+
+```java
+supplyAsync()
+thenApply()
+thenAccept()
+thenCombine()
+allOf()
+anyOf()
+exceptionally()
+```
+
+### Simple Example
+
+```java
+CompletableFuture
+        .supplyAsync(() -> getUser())
+        .thenApply(user -> getOrders(user))
+        .thenAccept(orders -> {
+            System.out.println(orders);
+        });
+```
+
+### Production Use
+
+Parallel or chained I/O operations where the downstream systems can handle the concurrency.
+
+### Pitfall
+
+> The underlying tasks still consume executor threads, and calling `get()` or `join()` can block.
+
+---
+
+# 30. Final Revision Diagram
+
+```text
+                         TASK
+                           |
+                           v
+                       EXECUTOR
+                           |
+                           v
+                      THREAD POOL
+                           |
+             +-------------+-------------+
+             |             |             |
+             v             v             v
+         Worker 1      Worker 2      Worker 3
+             |             |             |
+             +-------------+-------------+
+                           |
+                           v
+                       EXECUTION
+                           |
+                +----------+----------+
+                |                     |
+                v                     v
+             Future          CompletableFuture
+                                      |
+                         +------------+------------+
+                         |            |            |
+                         v            v            v
+                    thenApply    thenCombine   exceptionally
+                         |
+                         v
+                    thenAccept
+```
+
+---
+
+# Final Interview Formula
+
+When the interviewer asks a multithreading question:
+
+> **Definition -> Why -> How -> Code -> Real-world use -> Pitfall**
+
+This structure keeps the answer short, clear and production-oriented.
+
+---
+
+## Source Topics Covered
+
+This README is based on the supplied study material covering:
+
+- Program vs Process vs Thread
+- Single vs Multithreaded Processes
+- Java Thread States
+- Runnable and Callable
+- Java Executor Framework
+- Executor
+- ExecutorService
+- ThreadPoolExecutor
+- ScheduledExecutorService
+- Future
+- CompletableFuture
+- Task Scheduling
+- `@Scheduled`
+- `@Async`
+- Custom Executors
+- Tomcat Threading Model
+- Blocking and asynchronous processing
+- Spring singleton bean thread safety
 # Java Multithreading & Concurrency 
 
 > A practical, interview-focused guide to Java Multithreading, Executor Framework, Future, CompletableFuture, Spring Boot Async/Scheduling, Tomcat threading and thread safety.
