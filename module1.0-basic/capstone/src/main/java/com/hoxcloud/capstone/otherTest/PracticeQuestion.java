@@ -1,7 +1,5 @@
 package com.hoxcloud.capstone.otherTest;
 
-import java.text.StringCharacterIterator;
-
 public class PracticeQuestion {
 
     public static void main(String[] args) {
