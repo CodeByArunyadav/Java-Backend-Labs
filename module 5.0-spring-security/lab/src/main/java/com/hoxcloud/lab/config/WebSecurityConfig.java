@@ -20,9 +20,7 @@ public class WebSecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private static String[] publicRoute={"/login", "/api/auth/**", "/refresh"};
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            JwtAuthFilter jwtAuthFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthFilter jwtAuthFilter) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
