@@ -23,6 +23,7 @@
         <option value="$PROJECT_DIR$/module 14.0-apache-kafka/lab/user-service/pom.xml" />
         <option value="$PROJECT_DIR$/module 14.0-apache-kafka/lab/event-contracts/pom.xml" />
         <option value="$PROJECT_DIR$/module 18.0-Java-multithreading-in-spring/lab/multi-threading-concurrency/pom.xml" />
+        <option value="$PROJECT_DIR$/01-java-fundamentals/string/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gatway" />
+        <module name="string" />
         <module name="event-contracts" />
         <module name="multi-threading-concurrency" />
         <module name="module1.0-basic" />
@@ -71,6 +72,7 @@
       <module name="multi-threading-concurrency" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="spring-security" options="-parameters" />
+      <module name="string" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
