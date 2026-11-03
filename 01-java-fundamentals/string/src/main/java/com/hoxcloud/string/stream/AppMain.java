@@ -1,4 +1,6 @@
-package com.hoxcloud.string;
+package com.hoxcloud.string.stream;
+
+import com.hoxcloud.string.Project;
 
 import java.util.*;
 import java.util.stream.Collectors;

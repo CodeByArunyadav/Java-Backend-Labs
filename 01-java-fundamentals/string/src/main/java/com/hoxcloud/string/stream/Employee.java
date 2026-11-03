@@ -1,5 +1,6 @@
-package com.hoxcloud.string;
+package com.hoxcloud.string.stream;
 
+import com.hoxcloud.string.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

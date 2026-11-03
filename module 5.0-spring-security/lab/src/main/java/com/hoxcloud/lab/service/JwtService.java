@@ -30,6 +30,16 @@ public class JwtService {
 
     private SecretKey getRefreshSecretKey(){return Keys.hmacShaKeyFor(refreshTokenKey.getBytes(StandardCharsets.UTF_8));}
 
+/*
+    // 1. Extract the authorities as plain strings
+    List<String> authorities = userDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+
+    Map<String, Object> claims = new HashMap<>();
+    // 2. Put them into a custom claim field (usually named "authorities" or "roles")
+    claims.put("authorities", authorities);*/
+
     public String generateToken(UserEntity user) {
         return Jwts.builder()
                 //.subject(String.valueOf(user.getId()))
