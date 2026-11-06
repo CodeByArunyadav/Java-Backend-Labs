@@ -43,9 +43,9 @@ public class AppMain {
         employees.add(new Employee(8, "Pooja", "Development", 85000,
                 Arrays.asList(p1, p2, p4)));
 
-        employees.add(new Employee(11, "Pooja", "Development", 95000,
+     /*   employees.add(new Employee(11, "Pooja", "Development", 95000,
                 Arrays.asList(p1, p2, p4)));
-
+*/
         employees.add(new Employee(9, "Karan", "Finance", 65000,
                 Arrays.asList(p5)));
 
@@ -77,7 +77,7 @@ public class AppMain {
                 .skip(2)
                 .findFirst()
                 .ifPresent(e-> System.out.println(e.salary));*/
-                //.collect(Collectors.toList()).forEach(e-> System.out.println(e.salary+" "+e.getName()));
+        //.collect(Collectors.toList()).forEach(e-> System.out.println(e.salary+" "+e.getName()));
 
           /*  Set<Employee> emp=employees.stream().filter(e->e.department.equals("Development"))
            .collect(Collectors.toSet());
@@ -89,12 +89,12 @@ public class AppMain {
                 .collect(Collectors.toList()).forEach(e-> System.out.println(e.getName()+""+e.salary));
 */
 
-    //3. Find the employee with the highest salary.
+        //3. Find the employee with the highest salary.
 
       /*  employees.stream()
                 .min(Comparator.comparing(e->e.salary))
                 .ifPresent(e-> System.out.println(e.salary));*/
-    //4. Find the second-highest distinct salary.
+        //4. Find the second-highest distinct salary.
 /*
         employees.stream()
                 .sorted(Comparator.comparing((Employee e)->e.salary).reversed())
@@ -153,13 +153,30 @@ public class AppMain {
         System.out.println(depWithMaxSal);
 */
         //11. Find duplicate elements in a list.
-        Set<String> seen= new HashSet<>();
-       Map<String,List<Employee>>empGroup= employees.stream()
-                 .collect(Collectors.groupingBy(e->e.department));
+      /*  Set<String> seen = new HashSet<>();
+        Map<String, List<Employee>> empGroup = employees.stream()
+                .collect(Collectors.groupingBy(e -> e.department));
 
 
         System.out.println(empGroup);
+        */
 
-}
+
+        Map<String,Optional<Employee>>employeeMap=employees.stream()
+                .collect(Collectors.groupingBy(e->e.department,Collectors.collectingAndThen(Collectors.toList(),
+                                emp->emp.stream()
+                                        .sorted(Comparator.comparing((Employee e)->e.salary).reversed())
+                                        .skip(1)
+                                        .findFirst()
+
+
+                        )));
+
+
+        employeeMap.forEach((dep,emp)-> System.out.println(emp.toString()));
+
+
+
+    }
 
 }

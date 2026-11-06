@@ -20,6 +20,6 @@ public class Employee {
     // 🌟 THE FIX: You must override toString() to control what prints!
     @Override
     public String toString() {
-        return "Employee{name='" + name + " "+"Salary : "+ salary+"'}";
+        return "Employee{name='" + name + " "+"Salary : "+ salary+ "Department=' "+ department+"}";
     }
 }
