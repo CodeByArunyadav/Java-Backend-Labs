@@ -24,6 +24,8 @@
         <option value="$PROJECT_DIR$/module 14.0-apache-kafka/lab/event-contracts/pom.xml" />
         <option value="$PROJECT_DIR$/module 18.0-Java-multithreading-in-spring/lab/multi-threading-concurrency/pom.xml" />
         <option value="$PROJECT_DIR$/01-java-fundamentals/string/pom.xml" />
+        <option value="$PROJECT_DIR$/20-spring AI-RAG and tool calling/demo-AI/pom.xml" />
+        <option value="$PROJECT_DIR$/20-spring AI-RAG and tool calling/java-vector-search/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

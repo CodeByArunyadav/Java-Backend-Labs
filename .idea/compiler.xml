@@ -15,6 +15,7 @@
         <module name="user-service" />
         <module name="discovery-service" />
         <module name="notification-service" />
+        <module name="java-vector-search" />
       </profile>
       <profile name="Annotation profile for lab" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -46,6 +47,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="demo-AI" target="21" />
       <module name="hospital-mangment-system-example" target="17" />
       <module name="lab-inventory-service" target="21" />
       <module name="lab-order-service" target="21" />
@@ -58,9 +60,11 @@
       <module name="api-gatway" options="-parameters" />
       <module name="capstone" options="-parameters" />
       <module name="capstone (1)" options="-parameters" />
+      <module name="demo-AI" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
       <module name="event-contracts" options="" />
       <module name="hospital-mangment-system-example" options="-parameters" />
+      <module name="java-vector-search" options="-parameters" />
       <module name="lab" options="-parameters" />
       <module name="lab (1)" options="-parameters" />
       <module name="lab-inventory-service" options="-parameters" />
