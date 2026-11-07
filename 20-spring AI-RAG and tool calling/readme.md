@@ -1,6 +1,6 @@
 # 🚀 Production-Grade RAG with Java 21, Spring AI, Ollama & PostgreSQL (PGVector)
 
-Welcome! This hands-on tutorial series is written in **simple, easy-to-understand language** for Java developers with ~2 years of experience. You will learn how to build an AI-powered search and Retrieval-Augmented Generation (RAG) system **100% locally on Windows without Docker**.
+Welcome! This hands-on tutorial series is written in **simple, easy-to-understand language** for Java developers. You will learn how to build an AI-powered search and Retrieval-Augmented Generation (RAG) system **100% locally on Windows without Docker**.
 
 ---
 
