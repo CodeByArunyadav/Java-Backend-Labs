@@ -1,0 +1,11 @@
+package in.hoxcloud.java_vector_search.dto;
+
+
+import jakarta.validation.constraints.NotBlank;
+
+public record DocumentRequest(
+
+        @NotBlank(message = "Document text cannot be empty")
+        String text
+
+) {}
