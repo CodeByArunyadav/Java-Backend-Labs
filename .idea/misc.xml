@@ -26,6 +26,7 @@
         <option value="$PROJECT_DIR$/01-java-fundamentals/string/pom.xml" />
         <option value="$PROJECT_DIR$/20-spring AI-RAG and tool calling/demo-AI/pom.xml" />
         <option value="$PROJECT_DIR$/20-spring AI-RAG and tool calling/java-vector-search/pom.xml" />
+        <option value="$PROJECT_DIR$/20-spring AI-RAG and tool calling/java-embed-rag/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
